@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — MOCESCOD Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:#1C2B4A; --navy-d:#111E36;
+    --cream:#F8F4EC; --cream2:#EDE8DC; --white:#FFFFFF;
+    --gold:#C9A96E; --gold-d:#A07C40;
+    --green:#2B6A3F; --green-l:rgba(43,106,63,0.1);
+    --ink:#1A1A1A; --warm-grey:#7A7060;
+    --border:rgba(28,28,28,0.12);
+    --red:#c0392b; --red-bg:#fde8e8;
+    --sans:'DM Sans',system-ui,sans-serif;
+    --serif:'Cormorant Garamond',Georgia,serif;
+  }
+  html { font-size:16px; }
+  body { font-family:var(--sans); background:var(--cream2); color:var(--ink); min-height:100vh; -webkit-font-smoothing:antialiased; }
+
+  /* ── LOGIN ── */
+  #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--navy-d); padding:2rem; }
+  .login-box { background:var(--cream); padding:3rem 2.5rem; width:100%; max-width:400px; border-top:3px solid var(--gold); }
+  .login-logo { font-family:var(--serif); font-size:1.5rem; font-weight:600; color:var(--navy); margin-bottom:0.3rem; }
+  .login-logo em { font-style:italic; color:var(--gold); }
+  .login-sub { font-size:0.75rem; color:var(--warm-grey); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:2rem; }
+  .login-label { display:block; font-size:0.7rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:0.4rem; }
+  .login-input { width:100%; padding:0.8rem 1rem; margin-bottom:1.2rem; border:1.5px solid var(--border); background:var(--white); color:var(--ink); font-family:var(--sans); font-size:0.95rem; outline:none; transition:border-color 0.2s; }
+  .login-input:focus { border-color:var(--gold); }
+  .login-btn { width:100%; padding:0.85rem; background:var(--navy); color:var(--white); border:none; font-family:var(--sans); font-size:0.8rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; }
+  .login-btn:hover { background:var(--navy-d); }
+  .login-btn:disabled { opacity:0.6; cursor:default; }
+  .login-err { color:var(--red); background:var(--red-bg); font-size:0.82rem; padding:0.7rem 1rem; border-left:3px solid var(--red); margin-top:1rem; display:none; }
+
+  /* ── ADMIN SHELL ── */
+  #admin-screen { display:none; min-height:100vh; }
+
+  /* ── TOPBAR ── */
+  .admin-topbar { background:var(--navy-d); color:var(--white); height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 1.5rem; position:sticky; top:0; z-index:100; }
+  .topbar-logo { font-family:var(--serif); font-size:1.2rem; color:var(--white); }
+  .topbar-logo em { font-style:italic; color:var(--gold); }
+  .topbar-right { display:flex; align-items:center; gap:1.2rem; }
+  .topbar-user { font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+  .topbar-logout { font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5); cursor:pointer; border:none; background:none; font-family:var(--sans); transition:color 0.2s; }
+  .topbar-logout:hover { color:var(--white); }
+
+  /* ── MOBILE BOTTOM NAV ── */
+  .admin-mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; z-index:200; background:var(--navy-d); border-top:1px solid rgba(201,169,110,0.2); height:62px; }
+  .mobile-nav-tabs { display:flex; height:100%; }
+  .mobile-tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; border:none; background:none; color:rgba(255,255,255,0.4); font-family:var(--sans); font-size:0.56rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:color 0.2s; padding:0; }
+  .mobile-tab svg { width:18px; height:18px; }
+  .mobile-tab.active { color:var(--gold); }
+  .mobile-tab:hover { color:var(--white); }
+
+  /* ── LAYOUT ── */
+  .admin-layout { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 60px); }
+
+  /* ── SIDEBAR ── */
+  .admin-sidebar { background:var(--navy); padding:1.75rem 0; }
+  .sidebar-section { padding:0 1.25rem; margin-bottom:2rem; }
+  .sidebar-label { font-size:0.62rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:0.6rem; display:block; }
+  .sidebar-btn { display:flex; align-items:center; gap:0.7rem; width:100%; padding:0.7rem 1rem; margin-bottom:0.2rem; background:none; border:none; border-radius:3px; border-left:3px solid transparent; font-family:var(--sans); font-size:0.82rem; color:rgba(248,244,236,0.5); cursor:pointer; text-align:left; transition:all 0.15s; }
+  .sidebar-btn:hover { background:rgba(255,255,255,0.06); color:var(--white); }
+  .sidebar-btn.active { background:rgba(255,255,255,0.08); color:var(--white); border-left-color:var(--gold); }
+  .sidebar-count { margin-left:auto; background:var(--gold); color:var(--navy-d); font-size:0.62rem; font-weight:600; padding:2px 6px; border-radius:10px; min-width:20px; text-align:center; }
+  .sidebar-btn.active .sidebar-count { background:rgba(255,255,255,0.2); color:var(--white); }
+
+  /* ── MAIN ── */
+  .admin-main { padding:2rem 2.5rem; overflow-y:auto; background:var(--cream2); }
+  .panel { display:none; }
+  .panel.active { display:block; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
+  .page-header h1 { font-family:var(--serif); font-size:1.75rem; font-weight:600; color:var(--navy); }
+  .page-header p { font-size:0.82rem; color:var(--warm-grey); margin-top:0.2rem; }
+
+  /* ── STATS GRID ── */
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; margin-bottom:2rem; }
+  .stat-card { background:var(--white); padding:1.5rem; border:1px solid var(--border); }
+  .stat-label { font-size:0.65rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-grey); }
+  .stat-value { font-family:var(--serif); font-size:2.4rem; color:var(--navy); margin-top:0.4rem; }
+  .stat-sub { font-size:0.75rem; color:var(--green); margin-top:0.2rem; }
+
+  /* ── CARDS ── */
+  .card { background:var(--white); border:1px solid var(--border); padding:1.75rem; margin-bottom:1.5rem; }
+  .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem; }
+  .card-header h3 { font-family:var(--serif); font-size:1.2rem; color:var(--navy); }
+
+  /* ── TABLES ── */
+  .admin-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+  .admin-table th { text-align:left; padding:0.65rem 0.85rem; font-size:0.65rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-grey); border-bottom:2px solid var(--border); }
+  .admin-table td { padding:0.9rem 0.85rem; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .admin-table tr:last-child td { border-bottom:none; }
+  .admin-table tr:hover td { background:var(--cream); }
+  .badge { display:inline-block; padding:0.2rem 0.65rem; font-size:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; }
+  .badge-green { background:rgba(43,106,63,0.12); color:var(--green); }
+  .badge-navy { background:rgba(28,43,74,0.1); color:var(--navy); }
+  .badge-gold { background:rgba(201,169,110,0.18); color:var(--gold-d); }
+  .badge-grey { background:var(--cream2); color:var(--warm-grey); }
+
+  /* ── BUTTONS ── */
+  .btn-primary { padding:0.75rem 1.5rem; background:var(--navy); color:var(--white); border:none; font-family:var(--sans); font-size:0.78rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
+  .btn-primary:hover { background:var(--navy-d); }
+  .btn-primary:disabled { opacity:0.6; cursor:default; }
+  .btn-secondary { padding:0.75rem 1.25rem; background:none; color:var(--ink); border:1.5px solid var(--border); font-family:var(--sans); font-size:0.78rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .btn-secondary:hover { background:var(--cream2); }
+  .btn-danger { padding:0.75rem 1.5rem; background:var(--red); color:var(--white); border:none; font-family:var(--sans); font-size:0.78rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:opacity 0.2s; }
+  .btn-danger:hover { opacity:0.85; }
+  .tbl-btn { padding:0.3rem 0.7rem; border:1.5px solid; background:none; font-family:var(--sans); font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+  .tbl-edit { color:var(--navy); border-color:var(--navy); }
+  .tbl-edit:hover { background:var(--navy); color:var(--white); }
+  .tbl-del { color:var(--red); border-color:var(--red); }
+  .tbl-del:hover { background:var(--red); color:var(--white); }
+  .tbl-approve { color:var(--green); border-color:var(--green); }
+  .tbl-approve:hover { background:var(--green); color:var(--white); }
+  .tbl-actions { display:flex; gap:0.4rem; }
+
+  /* ── EMPTY / LOADING ── */
+  .empty-state { text-align:center; padding:4rem; color:var(--warm-grey); font-size:0.9rem; }
+  .empty-state span { font-size:2rem; display:block; margin-bottom:1rem; opacity:0.35; }
+  .loading-row td { text-align:center; padding:3rem; color:var(--warm-grey); }
+
+  /* ── GALLERY GRID ── */
+  .gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+  .gall-item { position:relative; background:var(--cream2); }
+  .gall-item img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+  .gall-item-actions { display:flex; gap:0.4rem; padding:0.5rem; background:var(--white); border-top:1px solid var(--border); }
+
+  /* ── MODAL ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:500; align-items:center; justify-content:center; padding:1.5rem; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--white); padding:2.5rem; width:100%; max-width:680px; max-height:92vh; overflow-y:auto; position:relative; }
+  .modal h3 { font-family:var(--serif); font-size:1.4rem; color:var(--navy); margin-bottom:2rem; }
+  .modal-close { position:absolute; top:1rem; right:1rem; font-size:1.3rem; cursor:pointer; color:var(--warm-grey); background:none; border:none; line-height:1; transition:color 0.2s; }
+  .modal-close:hover { color:var(--ink); }
+  .modal-actions { display:flex; gap:1rem; margin-top:1.5rem; flex-wrap:wrap; }
+
+  /* ── FORM FIELDS ── */
+  .mf { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.2rem; }
+  .mf label { font-size:0.7rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--warm-grey); }
+  .mf input, .mf select, .mf textarea { padding:0.75rem 1rem; border:1.5px solid var(--border); background:var(--cream); font-family:var(--sans); font-size:0.92rem; color:var(--ink); outline:none; transition:border-color 0.2s; resize:vertical; }
+  .mf input:focus, .mf select:focus, .mf textarea:focus { border-color:var(--gold); }
+  .mf-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .field-hint { font-size:0.72rem; color:var(--warm-grey); margin-top:0.25rem; }
+
+  /* ── RICH TEXT EDITOR (WanderWise style) ── */
+  .content-editor { border:1.5px solid var(--border); background:var(--white); transition:border-color 0.2s; }
+  .content-editor:focus-within { border-color:var(--gold); }
+  .editor-toolbar { display:flex; gap:0.25rem; padding:0.5rem; border-bottom:1px solid var(--border); flex-wrap:wrap; background:var(--cream); }
+  .toolbar-btn { padding:0.28rem 0.6rem; border:1px solid var(--border); background:none; font-family:var(--sans); font-size:0.76rem; cursor:pointer; color:var(--ink); transition:all 0.15s; border-radius:2px; }
+  .toolbar-btn:hover { background:var(--cream2); }
+  .editor-area { min-height:240px; padding:1rem; font-family:'Georgia',serif; font-size:0.98rem; line-height:1.8; color:var(--ink); outline:none; }
+  .editor-area:empty::before { content:attr(data-placeholder); color:#aaa; pointer-events:none; }
+  .toolbar-sep { width:1px; background:var(--border); margin:0.2rem 0.25rem; }
+
+  /* ── IMAGE UPLOADER ── */
+  .img-upload-wrap { display:flex; flex-direction:column; gap:0.5rem; }
+  .img-drop-zone { border:2px dashed var(--border); background:var(--cream); padding:1.25rem 1rem; text-align:center; cursor:pointer; transition:border-color 0.2s,background 0.2s; font-size:0.82rem; color:var(--warm-grey); position:relative; }
+  .img-drop-zone:hover, .img-drop-zone.drag-over { border-color:var(--gold); background:#faf6ee; }
+  .img-drop-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+  .img-drop-zone .drop-icon { font-size:1.5rem; margin-bottom:0.3rem; }
+  .img-drop-zone strong { display:block; color:var(--ink); font-size:0.84rem; margin-bottom:0.2rem; }
+  .img-preview-wrap { position:relative; display:none; }
+  .img-preview-wrap img { width:100%; max-height:180px; object-fit:cover; display:block; border:1.5px solid var(--border); }
+  .img-preview-clear { position:absolute; top:0.4rem; right:0.4rem; background:rgba(0,0,0,0.6); color:#fff; border:none; cursor:pointer; width:26px; height:26px; border-radius:50%; font-size:0.9rem; display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+  .img-preview-clear:hover { background:rgba(192,57,43,0.85); }
+  .img-progress-bar { height:4px; background:var(--border); display:none; }
+  .img-progress-fill { height:100%; background:var(--green); width:0%; transition:width 0.2s; }
+  .img-url-row { display:flex; align-items:center; gap:0.5rem; }
+  .img-url-row input { flex:1; padding:0.6rem 0.8rem; border:1.5px solid var(--border); background:var(--cream); font-family:var(--sans); font-size:0.82rem; color:var(--ink); outline:none; transition:border-color 0.2s; }
+  .img-url-row input:focus { border-color:var(--gold); }
+  .img-url-toggle { font-size:0.72rem; color:var(--gold-d); cursor:pointer; white-space:nowrap; background:none; border:none; text-decoration:underline; padding:0; font-family:var(--sans); }
+  .img-upload-status { font-size:0.75rem; color:var(--warm-grey); }
+
+  /* ── VOLUNTEER DETAIL MODAL ── */
+  .vol-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem 2rem; margin-bottom:1.5rem; }
+  .vol-detail-field { display:flex; flex-direction:column; gap:0.25rem; }
+  .vol-detail-label { font-size:0.62rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-grey); }
+  .vol-detail-value { font-size:0.9rem; color:var(--ink); font-family:var(--sans); }
+  .vol-detail-cover { background:var(--cream); border-left:3px solid var(--green); padding:1rem 1.25rem; font-size:0.88rem; line-height:1.8; color:var(--ink); white-space:pre-wrap; margin-bottom:1.5rem; }
+  .vol-status-bar { display:flex; align-items:center; gap:0.75rem; padding:1rem 1.25rem; background:var(--cream2); border:1px solid var(--border); margin-bottom:1.5rem; flex-wrap:wrap; }
+  .vol-status-bar span { font-size:0.78rem; color:var(--warm-grey); margin-right:auto; }
+
+  /* ── VOLUNTEER DETAIL MODAL ── */
+  .vol-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem 2rem; margin-bottom:1.5rem; }
+  .vol-detail-field { display:flex; flex-direction:column; gap:0.25rem; }
+  .vol-detail-label { font-size:0.62rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-grey); }
+  .vol-detail-value { font-size:0.9rem; color:var(--ink); }
+  .vol-cover-block { background:var(--cream); border-left:3px solid var(--green); padding:1rem 1.25rem; font-size:0.88rem; line-height:1.8; color:var(--ink); white-space:pre-wrap; margin-top:0.4rem; }
+  .vol-status-bar { display:flex; align-items:center; gap:0.75rem; padding:0.85rem 1.25rem; background:var(--cream2); border:1px solid var(--border); margin-bottom:1.5rem; flex-wrap:wrap; }
+  .vol-status-bar strong { font-size:0.82rem; }
+  .vol-status-bar span { font-size:0.78rem; color:var(--warm-grey); margin-right:auto; }
+  @media(max-width:600px) { .vol-detail-grid { grid-template-columns:1fr; } }
+
+  /* ── DATA/BACKUP ── */
+  .data-section { max-width:600px; }
+  .data-card { background:var(--white); border:1px solid var(--border); padding:1.5rem; margin-bottom:1rem; }
+  .data-card h3 { font-size:0.95rem; color:var(--navy); margin-bottom:0.35rem; }
+  .data-card p { font-size:0.85rem; color:var(--warm-grey); margin-bottom:1rem; line-height:1.6; }
+  .save-msg { font-size:0.82rem; color:var(--green); }
+  #import-msg { font-size:0.82rem; color:var(--green); }
+
+  /* ── MOBILE POST CARDS ── */
+  .post-mobile-list { display:none; flex-direction:column; }
+  .post-mobile-card { padding:1rem 0; border-bottom:1px solid var(--border); }
+  .post-mobile-card:last-child { border-bottom:none; }
+  .post-mobile-title { font-weight:500; font-size:0.92rem; margin-bottom:0.3rem; }
+  .post-mobile-meta { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.6rem; flex-wrap:wrap; }
+  .post-mobile-actions { display:flex; gap:0.5rem; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1100px) { .stats-grid { grid-template-columns:repeat(2,1fr); } .gallery-grid { grid-template-columns:repeat(3,1fr); } }
+  @media(max-width:768px) {
+    .admin-sidebar { display:none; }
+    .admin-mobile-nav { display:block; }
+    .admin-layout { grid-template-columns:1fr; }
+    .admin-main { padding:1.25rem 1rem 80px; }
+    .mf-row { grid-template-columns:1fr; }
+    .admin-table { display:none; }
+    .post-mobile-list { display:flex; }
+    .topbar-user { display:none; }
+    .stats-grid { grid-template-columns:repeat(2,1fr); }
+    .gallery-grid { grid-template-columns:repeat(2,1fr); }
+    .modal { padding:1.5rem; }
+  }
+  @media(max-width:480px) { .stats-grid { grid-template-columns:1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">MOCE<em>SCOD</em></div>
+    <p class="login-sub">Admin Dashboard</p>
+    <label class="login-label" for="login-email">Email</label>
+    <input class="login-input" type="email" id="login-email" placeholder="admin@mocescod.org" autocomplete="email">
+    <label class="login-label" for="login-pw">Password</label>
+    <input class="login-input" type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password">
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Enter Dashboard →</button>
+    <div class="login-err" id="login-err">Incorrect email or password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+
+  <header class="admin-topbar">
+    <div class="topbar-logo">MOCE<em>SCOD</em> Admin</div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbar-user-email">—</span>
+      <button class="topbar-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="admin-mobile-nav" aria-label="Admin navigation">
+    <div class="mobile-nav-tabs">
+      <button class="mobile-tab active" id="mob-overview" onclick="showPanel('overview','mob-overview')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </button>
+      <button class="mobile-tab" id="mob-posts" onclick="showPanel('posts','mob-posts')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Posts
+      </button>
+      <button class="mobile-tab" id="mob-programs" onclick="showPanel('programs','mob-programs')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        Programs
+      </button>
+      <button class="mobile-tab" id="mob-gallery" onclick="showPanel('gallery','mob-gallery')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Gallery
+      </button>
+      <button class="mobile-tab" id="mob-data" onclick="showPanel('data','mob-data')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        Data
+      </button>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-section">
+        <span class="sidebar-label">Dashboard</span>
+        <button class="sidebar-btn active" id="sb-overview" onclick="showPanel('overview','mob-overview')">
+          <span>📊</span> Overview
+        </button>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-label">Content</span>
+        <button class="sidebar-btn" id="sb-posts" onclick="showPanel('posts','mob-posts')">
+          <span>📝</span> Blog Posts
+          <span class="sidebar-count" id="sidebar-count-posts">—</span>
+        </button>
+        <button class="sidebar-btn" id="sb-programs" onclick="showPanel('programs','mob-programs')">
+          <span>🌱</span> Programs
+          <span class="sidebar-count" id="sidebar-count-programs">—</span>
+        </button>
+        <button class="sidebar-btn" id="sb-gallery" onclick="showPanel('gallery','mob-gallery')">
+          <span>🖼️</span> Gallery
+          <span class="sidebar-count" id="sidebar-count-gallery">—</span>
+        </button>
+        <button class="sidebar-btn" id="sb-volunteers" onclick="showPanel('volunteers','mob-volunteers')">
+          <span>🤝</span> Volunteers
+          <span class="sidebar-count" id="sidebar-count-volunteers">—</span>
+        </button>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-label">Settings</span>
+        <button class="sidebar-btn" id="sb-data" onclick="showPanel('data','mob-data')">
+          <span>⬡</span> Data &amp; Backup
+        </button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+
+      <!-- OVERVIEW -->
+      <div class="panel active" id="panel-overview">
+        <div class="page-header">
+          <div>
+            <h1>Overview</h1>
+            <p>Welcome to the MOCESCOD admin dashboard.</p>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Blog Posts</div><div class="stat-value" id="stat-posts">—</div><div class="stat-sub">Published articles</div></div>
+          <div class="stat-card"><div class="stat-label">Programs</div><div class="stat-value" id="stat-programs">—</div><div class="stat-sub">Active programmes</div></div>
+          <div class="stat-card"><div class="stat-label">Gallery</div><div class="stat-value" id="stat-gallery">—</div><div class="stat-sub">Photos uploaded</div></div>
+          <div class="stat-card"><div class="stat-label">Volunteers</div><div class="stat-value" id="stat-volunteers">—</div><div class="stat-sub">Applications</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Recent Posts</h3><button class="btn-secondary" onclick="showPanel('posts','mob-posts')" style="padding:0.45rem 1rem;font-size:0.72rem;">View All</button></div>
+          <div id="overview-posts"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Recent Volunteer Applications</h3><button class="btn-secondary" onclick="showPanel('volunteers','mob-volunteers')" style="padding:0.45rem 1rem;font-size:0.72rem;">View All</button></div>
+          <div id="overview-vols"></div>
+        </div>
+      </div>
+
+      <!-- BLOG POSTS -->
+      <div class="panel" id="panel-posts">
+        <div class="page-header">
+          <div><h1>Blog Posts</h1><p>Create, edit and delete articles.</p></div>
+          <button class="btn-primary" onclick="openPostModal()">+ New Post</button>
+        </div>
+        <div class="card" style="padding:0;">
+          <table class="admin-table">
+            <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="posts-tbody"><tr class="loading-row"><td colspan="4">Loading…</td></tr></tbody>
+          </table>
+          <div class="post-mobile-list" id="posts-mobile"></div>
+        </div>
+      </div>
+
+      <!-- PROGRAMS -->
+      <div class="panel" id="panel-programs">
+        <div class="page-header">
+          <div><h1>Programs</h1><p>Manage your community programmes.</p></div>
+          <button class="btn-primary" onclick="openProgModal()">+ Add Program</button>
+        </div>
+        <div class="card" style="padding:0;">
+          <table class="admin-table">
+            <thead><tr><th>Icon</th><th>Title</th><th>Order</th><th>Actions</th></tr></thead>
+            <tbody id="programs-tbody"><tr class="loading-row"><td colspan="4">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- GALLERY -->
+      <div class="panel" id="panel-gallery">
+        <div class="page-header">
+          <div><h1>Gallery</h1><p>Upload and manage gallery photos.</p></div>
+          <button class="btn-primary" onclick="openGallModal()">+ Add Photo</button>
+        </div>
+        <div class="card">
+          <div class="gallery-grid" id="gallery-grid"></div>
+          <div class="empty-state" id="gallery-empty" style="display:none;"><span>🖼️</span>No gallery items yet.</div>
+        </div>
+      </div>
+
+      <!-- VOLUNTEERS -->
+      <div class="panel" id="panel-volunteers">
+        <div class="page-header">
+          <div><h1>Volunteers</h1><p>View and manage volunteer applications.</p></div>
+        </div>
+        <div class="card" style="padding:0;">
+          <table class="admin-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Area</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="volunteers-tbody"><tr class="loading-row"><td colspan="6">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DATA & BACKUP -->
+      <div class="panel" id="panel-data">
+        <div class="page-header">
+          <div><h1>Data &amp; Backup</h1><p>Export or import all collections as JSON.</p></div>
+        </div>
+        <div class="data-section">
+          <div class="data-card">
+            <h3>Export All Data</h3>
+            <p>Download all posts, programs, gallery and volunteer records as a single JSON backup file.</p>
+            <button class="btn-primary" onclick="exportAll()">Download Backup →</button>
+          </div>
+          <div class="data-card">
+            <h3>Import Backup</h3>
+            <p>Upload a previously exported JSON file. Existing records with matching IDs are skipped to avoid duplicates.</p>
+            <input type="file" id="import-file" accept=".json" onchange="importAll(this)" style="display:none">
+            <button class="btn-primary" onclick="document.getElementById('import-file').click()">Choose File →</button>
+            <span id="import-msg" style="margin-left:1rem;display:none;"></span>
+          </div>
+          <div class="data-card" style="border-left:3px solid var(--red);">
+            <h3 style="color:var(--red);">Danger Zone</h3>
+            <p>Permanently delete all posts from Firestore. This cannot be undone.</p>
+            <button class="btn-danger" onclick="deleteAllPosts()">Delete All Posts</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- POST MODAL -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('post-modal')">✕</button>
+    <h3 id="post-modal-title">New Post</h3>
+    <input type="hidden" id="pm-id">
+    <div class="mf"><label>Title *</label><input type="text" id="pm-title" required placeholder="Post title"></div>
+    <div class="mf-row">
+      <div class="mf"><label>Category</label>
+        <select id="pm-category">
+          <option>News</option><option>Programs</option><option>Reports</option><option>Stories</option>
+        </select>
+      </div>
+      <div class="mf"><label>Date</label><input type="date" id="pm-date"></div>
+    </div>
+    <div class="mf"><label>Short Excerpt</label><textarea id="pm-excerpt" rows="2" placeholder="One or two sentence summary…"></textarea></div>
+    <div class="mf"><label>Cover Image</label>
+      <div class="img-upload-wrap">
+        <div class="img-drop-zone" id="pm-drop-zone">
+          <input type="file" accept="image/*" id="pm-file-input">
+          <div class="drop-icon">🖼️</div>
+          <strong>Click or drag &amp; drop to upload</strong>
+          <span>JPG, PNG, WEBP — max 5 MB</span>
+        </div>
+        <div class="img-preview-wrap" id="pm-preview-wrap">
+          <img id="pm-preview-img" src="" alt="preview">
+          <button class="img-preview-clear" onclick="clearImage('pm')" title="Remove">✕</button>
+        </div>
+        <div class="img-progress-bar" id="pm-progress-bar"><div class="img-progress-fill" id="pm-progress-fill"></div></div>
+        <div class="img-url-row">
+          <input type="url" id="pm-image" placeholder="…or paste an image URL">
+          <button class="img-url-toggle" type="button" onclick="applyUrlPreview('pm')">Preview URL</button>
+        </div>
+        <span class="img-upload-status" id="pm-upload-status"></span>
+      </div>
+    </div>
+    <div class="mf">
+      <label>Content *</label>
+      <div class="content-editor">
+        <div class="editor-toolbar">
+          <button type="button" class="toolbar-btn" onclick="fmt('bold')"><strong>B</strong></button>
+          <button type="button" class="toolbar-btn" onclick="fmt('italic')"><em>I</em></button>
+          <div class="toolbar-sep"></div>
+          <button type="button" class="toolbar-btn" onclick="fmtBlock('h2')">H2</button>
+          <button type="button" class="toolbar-btn" onclick="fmtBlock('h3')">H3</button>
+          <div class="toolbar-sep"></div>
+          <button type="button" class="toolbar-btn" onclick="fmt('insertUnorderedList')">List</button>
+          <button type="button" class="toolbar-btn" onclick="fmtBlock('blockquote')">Quote</button>
+          <div class="toolbar-sep"></div>
+          <button type="button" class="toolbar-btn" onclick="clearFormat()">Clear</button>
+        </div>
+        <div class="editor-area" id="pm-content" contenteditable="true" data-placeholder="Start writing your post here…"></div>
+      </div>
+      <p class="field-hint">Use toolbar buttons to format. Content saves as HTML.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" id="pm-save-btn" onclick="savePost()">Save Post</button>
+      <button class="btn-secondary" onclick="closeModal('post-modal')">Cancel</button>
+      <span class="save-msg" id="pm-save-msg"></span>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRAM MODAL -->
+<div class="modal-overlay" id="prog-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('prog-modal')">✕</button>
+    <h3 id="prog-modal-title">Add Program</h3>
+    <input type="hidden" id="pgm-id">
+    <div class="mf"><label>Program Title *</label><input type="text" id="pgm-title" placeholder="e.g. Youth Empowerment"></div>
+    <div class="mf-row">
+      <div class="mf"><label>Icon (emoji)</label><input type="text" id="pgm-icon" placeholder="🎓" maxlength="4"></div>
+      <div class="mf"><label>Display Order</label><input type="number" id="pgm-order" placeholder="1" min="1"></div>
+    </div>
+    <div class="mf"><label>Description *</label><textarea id="pgm-desc" rows="3" placeholder="Brief description of the programme…"></textarea></div>
+    <div class="mf"><label>Cover Image</label>
+      <div class="img-upload-wrap">
+        <div class="img-drop-zone" id="pgm-drop-zone">
+          <input type="file" accept="image/*" id="pgm-file-input">
+          <div class="drop-icon">🖼️</div>
+          <strong>Click or drag &amp; drop to upload</strong>
+          <span>JPG, PNG, WEBP — max 5 MB</span>
+        </div>
+        <div class="img-preview-wrap" id="pgm-preview-wrap">
+          <img id="pgm-preview-img" src="" alt="preview">
+          <button class="img-preview-clear" onclick="clearImage('pgm')" title="Remove">✕</button>
+        </div>
+        <div class="img-progress-bar" id="pgm-progress-bar"><div class="img-progress-fill" id="pgm-progress-fill"></div></div>
+        <div class="img-url-row">
+          <input type="url" id="pgm-image" placeholder="…or paste an image URL">
+          <button class="img-url-toggle" type="button" onclick="applyUrlPreview('pgm')">Preview URL</button>
+        </div>
+        <span class="img-upload-status" id="pgm-upload-status"></span>
+      </div>
+    </div>
+    <div class="mf"><label>Tags (comma-separated)</label><input type="text" id="pgm-tags" placeholder="Training, Youth, Skills"></div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="saveProgram()">Save Program</button>
+      <button class="btn-secondary" onclick="closeModal('prog-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY MODAL -->
+<div class="modal-overlay" id="gall-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('gall-modal')">✕</button>
+    <h3 id="gall-modal-title">Add Gallery Photo</h3>
+    <input type="hidden" id="gm-id">
+    <div class="mf"><label>Photo Image *</label>
+      <div class="img-upload-wrap">
+        <div class="img-drop-zone" id="gm-drop-zone">
+          <input type="file" accept="image/*" id="gm-file-input">
+          <div class="drop-icon">🖼️</div>
+          <strong>Click or drag &amp; drop to upload</strong>
+          <span>JPG, PNG, WEBP — max 5 MB</span>
+        </div>
+        <div class="img-preview-wrap" id="gm-preview-wrap">
+          <img id="gm-preview-img" src="" alt="preview">
+          <button class="img-preview-clear" onclick="clearImage('gm')" title="Remove">✕</button>
+        </div>
+        <div class="img-progress-bar" id="gm-progress-bar"><div class="img-progress-fill" id="gm-progress-fill"></div></div>
+        <div class="img-url-row">
+          <input type="url" id="gm-url" placeholder="…or paste an image URL">
+          <button class="img-url-toggle" type="button" onclick="applyUrlPreview('gm')">Preview URL</button>
+        </div>
+        <span class="img-upload-status" id="gm-upload-status"></span>
+      </div>
+    </div>
+    <div class="mf"><label>Caption / Title</label><input type="text" id="gm-title" placeholder="Describe the photo"></div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="saveGallery()">Save Photo</button>
+      <button class="btn-secondary" onclick="closeModal('gall-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { MC } from '../js/global.js';
+
+  /* ── FORMAT HELPERS (for rich editor) ── */
+  window.fmt        = cmd => { document.execCommand(cmd, false, null); document.getElementById('pm-content').focus(); };
+  window.fmtBlock   = tag => { document.execCommand('formatBlock', false, tag); document.getElementById('pm-content').focus(); };
+  window.clearFormat = () => { document.execCommand('removeFormat', false, null); document.getElementById('pm-content').focus(); };
+
+  /* ── AUTH ── */
+  MC.onAuth(user => {
+    if (user) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      document.getElementById('topbar-user-email').textContent = user.email;
+      loadAll();
+    } else {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('admin-screen').style.display = 'none';
+    }
+  });
+
+  window.doLogin = async () => {
+    const email = document.getElementById('login-email').value.trim();
+    const pw    = document.getElementById('login-pw').value;
+    const btn   = document.getElementById('login-btn');
+    const err   = document.getElementById('login-err');
+    btn.disabled = true; btn.textContent = 'Signing in…'; err.style.display = 'none';
+    try { await MC.login(email, pw); }
+    catch (e) { err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Enter Dashboard →'; }
+  };
+  document.getElementById('login-pw').addEventListener('keydown', e => { if (e.key === 'Enter') window.doLogin(); });
+  window.doLogout = () => MC.logout();
+
+  /* ── DATA STORE ── */
+  let DATA = { posts:[], programs:[], gallery:[], volunteers:[] };
+
+  async function loadAll() {
+    const [posts, programs, gallery, volunteers] = await Promise.all([
+      MC.getPosts(), MC.getPrograms(), MC.getGallery(), MC.getVolunteers()
+    ]);
+    DATA = { posts, programs, gallery, volunteers };
+    renderStats();
+    renderOverviewPosts();
+    renderOverviewVols();
+    renderPostsTable();
+    renderProgramsTable();
+    renderGalleryGrid();
+    renderVolunteersTable();
+    updateCounts();
+  }
+
+  function updateCounts() {
+    document.getElementById('sidebar-count-posts').textContent      = DATA.posts.length;
+    document.getElementById('sidebar-count-programs').textContent   = DATA.programs.length;
+    document.getElementById('sidebar-count-gallery').textContent    = DATA.gallery.length;
+    document.getElementById('sidebar-count-volunteers').textContent = DATA.volunteers.length;
+  }
+
+  /* ── PANEL SWITCHING ── */
+  window.showPanel = (name, mobId) => {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.mobile-tab').forEach(b => b.classList.remove('active'));
+    const sb = document.getElementById('sb-' + name);
+    if (sb) sb.classList.add('active');
+    if (mobId) { const mb = document.getElementById(mobId); if (mb) mb.classList.add('active'); }
+  };
+  document.querySelectorAll('.sidebar-btn[id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.id.replace('sb-','');
+      showPanel(name, 'mob-' + name);
+    });
+  });
+
+  /* ── STATS ── */
+  function renderStats() {
+    document.getElementById('stat-posts').textContent      = DATA.posts.length;
+    document.getElementById('stat-programs').textContent   = DATA.programs.length;
+    document.getElementById('stat-gallery').textContent    = DATA.gallery.length;
+    document.getElementById('stat-volunteers').textContent = DATA.volunteers.length;
+  }
+
+  /* ── OVERVIEW ── */
+  function renderOverviewPosts() {
+    const el = document.getElementById('overview-posts');
+    const rows = DATA.posts.slice(0,5);
+    if (!rows.length) { el.innerHTML = '<div class="empty-state"><span>✦</span>No posts yet.</div>'; return; }
+    el.innerHTML = `<table class="admin-table">
+      <thead><tr><th>Title</th><th>Category</th><th>Date</th></tr></thead>
+      <tbody>${rows.map(p => `<tr>
+        <td><strong>${p.title}</strong></td>
+        <td><span class="badge badge-green">${p.category||'News'}</span></td>
+        <td style="color:var(--warm-grey);font-size:0.8rem;">${MC.formatDate(p.date)}</td>
+      </tr>`).join('')}</tbody></table>`;
+  }
+
+  function renderOverviewVols() {
+    const el = document.getElementById('overview-vols');
+    const rows = DATA.volunteers.slice(0,5);
+    if (!rows.length) { el.innerHTML = '<div class="empty-state"><span>✦</span>No applications yet.</div>'; return; }
+    el.innerHTML = `<table class="admin-table">
+      <thead><tr><th>Name</th><th>Area</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>${rows.map(v => `<tr>
+        <td>${v.firstName||''} ${v.lastName||v.name||''}</td>
+        <td>${v.area||v.program||'—'}</td>
+        <td><span class="badge ${v.status==='approved'?'badge-green':v.status==='rejected'?'badge-grey':'badge-gold'}">${v.status||'pending'}</span></td>
+        <td style="color:var(--warm-grey);font-size:0.8rem;">${MC.formatDate(v.date)}</td>
+      </tr>`).join('')}</tbody></table>`;
+  }
+
+  /* ── POSTS TABLE ── */
+  function renderPostsTable() {
+    const tbody  = document.getElementById('posts-tbody');
+    const mobile = document.getElementById('posts-mobile');
+    if (!DATA.posts.length) {
+      tbody.innerHTML  = '<tr><td colspan="4"><div class="empty-state"><span>✦</span>No posts yet.</div></td></tr>';
+      mobile.innerHTML = '<div class="empty-state"><span>✦</span>No posts yet.</div>';
+      return;
+    }
+    tbody.innerHTML = DATA.posts.map(p => `<tr>
+      <td><strong>${p.title}</strong><br><span style="font-size:0.78rem;color:var(--warm-grey);">${MC.excerpt(p.content,60)}</span></td>
+      <td><span class="badge badge-green">${p.category||'News'}</span></td>
+      <td style="white-space:nowrap;color:var(--warm-grey);font-size:0.8rem;">${MC.formatDate(p.date)}</td>
+      <td><div class="tbl-actions">
+        <button class="tbl-btn tbl-edit" onclick="editPost('${p.id}')">Edit</button>
+        <button class="tbl-btn tbl-del" onclick="deletePost('${p.id}')">Delete</button>
+      </div></td>
+    </tr>`).join('');
+    mobile.innerHTML = DATA.posts.map(p => `
+      <div class="post-mobile-card">
+        <div class="post-mobile-title">${p.title}</div>
+        <div class="post-mobile-meta">
+          <span class="badge badge-green" style="font-size:0.6rem;">${p.category||'News'}</span>
+          <span style="font-size:0.75rem;color:var(--warm-grey);">${MC.formatDate(p.date)}</span>
+        </div>
+        <div class="post-mobile-actions">
+          <button class="tbl-btn tbl-edit" onclick="editPost('${p.id}')">Edit</button>
+          <button class="tbl-btn tbl-del" onclick="deletePost('${p.id}')">Delete</button>
+        </div>
+      </div>`).join('');
+  }
+
+  /* ── PROGRAMS TABLE ── */
+  function renderProgramsTable() {
+    const tbody = document.getElementById('programs-tbody');
+    if (!DATA.programs.length) {
+      tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><span>✦</span>No programs yet.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = DATA.programs.map(p => `<tr>
+      <td style="font-size:1.4rem;">${p.icon||'✦'}</td>
+      <td><strong>${p.title}</strong><br><span style="font-size:0.78rem;color:var(--warm-grey);">${MC.excerpt(p.description,70)}</span></td>
+      <td style="color:var(--warm-grey);">${p.order||'—'}</td>
+      <td><div class="tbl-actions">
+        <button class="tbl-btn tbl-edit" onclick="editProgram('${p.id}')">Edit</button>
+        <button class="tbl-btn tbl-del" onclick="deleteProgram('${p.id}')">Delete</button>
+      </div></td>
+    </tr>`).join('');
+  }
+
+  /* ── GALLERY GRID ── */
+  function renderGalleryGrid() {
+    const grid  = document.getElementById('gallery-grid');
+    const empty = document.getElementById('gallery-empty');
+    if (!DATA.gallery.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    grid.innerHTML = DATA.gallery.map(item => `
+      <div class="gall-item">
+        <img src="${item.url}" alt="${item.title||''}" loading="lazy" onerror="this.style.background='var(--cream2)'">
+        <div class="gall-item-actions">
+          <button class="tbl-btn tbl-edit" style="flex:1;" onclick="editGallery('${item.id}')">Edit</button>
+          <button class="tbl-btn tbl-del" style="flex:1;" onclick="deleteGallery('${item.id}')">Del</button>
+        </div>
+      </div>`).join('');
+  }
+
+  /* ── VOLUNTEERS TABLE ── */
+  function renderVolunteersTable() {
+    const tbody = document.getElementById('volunteers-tbody');
+    if (!DATA.volunteers.length) {
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><span>✦</span>No applications yet.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = DATA.volunteers.map(v => `<tr>
+      <td><strong>${v.firstName||''} ${v.lastName||v.name||''}</strong><br><span style="font-size:0.75rem;color:var(--warm-grey);">${v.phone||''}</span></td>
+      <td style="font-size:0.82rem;">${v.email||'—'}</td>
+      <td>${v.area||v.program||v.type||'—'}</td>
+      <td><span class="badge ${v.status==='approved'?'badge-green':v.status==='rejected'?'badge-grey':'badge-gold'}">${v.status||'pending'}</span></td>
+      <td style="color:var(--warm-grey);font-size:0.8rem;white-space:nowrap;">${MC.formatDate(v.date)}</td>
+      <td><div class="tbl-actions">
+        <button class="tbl-btn tbl-edit" onclick="viewVol('${v.id}')">View</button>
+        ${v.status!=='approved'?`<button class="tbl-btn tbl-approve" onclick="approveVol('${v.id}')">Approve</button>`:''}
+        <button class="tbl-btn tbl-del" onclick="deleteVol('${v.id}')">Delete</button>
+      </div></td>
+    </tr>`).join('');
+  }
+
+  /* ── MODAL HELPERS ── */
+  window.closeModal = id => document.getElementById(id).classList.remove('open');
+
+  /* ── IMAGE UPLOADER SYSTEM ── */
+  const PENDING_FILES  = {};
+  const UPLOAD_FOLDERS = { pm:'posts', pgm:'programs', gm:'gallery' };
+
+  function initUploader(prefix) {
+    const fileInput = document.getElementById(`${prefix}-file-input`);
+    const dropZone  = document.getElementById(`${prefix}-drop-zone`);
+    if (!fileInput || !dropZone) return;
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFileSelected(prefix, fileInput.files[0]); });
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) handleFileSelected(prefix, file);
+    });
+  }
+
+  function handleFileSelected(prefix, file) {
+    if (file.size > 5 * 1024 * 1024) { setStatus(prefix, '⚠ File too large (max 5 MB). Please compress or use a URL.', 'error'); return; }
+    PENDING_FILES[prefix] = file;
+    const reader = new FileReader();
+    reader.onload = e => showImgPreview(prefix, e.target.result);
+    reader.readAsDataURL(file);
+    setStatus(prefix, `📎 ${file.name} — will upload when you save`, '');
+  }
+
+  function showImgPreview(prefix, src) {
+    const wrap  = document.getElementById(`${prefix}-preview-wrap`);
+    const img   = document.getElementById(`${prefix}-preview-img`);
+    const drop  = document.getElementById(`${prefix}-drop-zone`);
+    img.src = src; wrap.style.display = 'block'; drop.style.display = 'none';
+  }
+
+  window.clearImage = (prefix) => {
+    const wrap  = document.getElementById(`${prefix}-preview-wrap`);
+    const drop  = document.getElementById(`${prefix}-drop-zone`);
+    const fi    = document.getElementById(`${prefix}-file-input`);
+    const urlEl = document.getElementById(prefix === 'gm' ? 'gm-url' : `${prefix}-image`);
+    wrap.style.display = 'none'; drop.style.display = 'block';
+    if (fi) fi.value = ''; if (urlEl) urlEl.value = '';
+    delete PENDING_FILES[prefix]; setStatus(prefix, '', '');
+  };
+
+  window.applyUrlPreview = (prefix) => {
+    const urlId = prefix === 'gm' ? 'gm-url' : `${prefix}-image`;
+    const url   = document.getElementById(urlId).value.trim();
+    if (!url) return;
+    delete PENDING_FILES[prefix]; showImgPreview(prefix, url); setStatus(prefix, '', '');
+  };
+
+  function setStatus(prefix, msg, type) {
+    const el = document.getElementById(`${prefix}-upload-status`);
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = type === 'error' ? 'var(--red)' : type === 'ok' ? 'var(--green)' : 'var(--warm-grey)';
+  }
+
+  function resetUploader(prefix, existingUrl) {
+    const wrap = document.getElementById(`${prefix}-preview-wrap`);
+    const drop = document.getElementById(`${prefix}-drop-zone`);
+    const fi   = document.getElementById(`${prefix}-file-input`);
+    const bar  = document.getElementById(`${prefix}-progress-bar`);
+    const fill = document.getElementById(`${prefix}-progress-fill`);
+    delete PENDING_FILES[prefix];
+    if (fi)   fi.value = '';
+    if (bar)  bar.style.display = 'none';
+    if (fill) fill.style.width = '0%';
+    setStatus(prefix, '', '');
+    if (existingUrl) { showImgPreview(prefix, existingUrl); }
+    else { if (wrap) wrap.style.display = 'none'; if (drop) drop.style.display = 'block'; }
+  }
+
+  async function resolveImage(prefix) {
+    const urlId = prefix === 'gm' ? 'gm-url' : `${prefix}-image`;
+    const file  = PENDING_FILES[prefix];
+    if (!file) return document.getElementById(urlId)?.value || '';
+    const bar  = document.getElementById(`${prefix}-progress-bar`);
+    const fill = document.getElementById(`${prefix}-progress-fill`);
+    bar.style.display = 'block'; setStatus(prefix, 'Uploading…', '');
+    try {
+      const url = await MC.uploadImage(file, UPLOAD_FOLDERS[prefix], pct => { fill.style.width = pct + '%'; });
+      bar.style.display = 'none';
+      delete PENDING_FILES[prefix];
+      document.getElementById(urlId).value = url;
+      setStatus(prefix, '✓ Upload complete', 'ok');
+      return url;
+    } catch (err) {
+      bar.style.display = 'none';
+      setStatus(prefix, '✗ Upload failed — try again or paste a URL', 'error');
+      throw err;
+    }
+  }
+
+  ['pm', 'pgm', 'gm'].forEach(initUploader);
+
+  /* ── POST CRUD ── */
+  window.openPostModal = () => {
+    document.getElementById('post-modal-title').textContent = 'New Post';
+    document.getElementById('pm-id').value      = '';
+    document.getElementById('pm-title').value   = '';
+    document.getElementById('pm-excerpt').value = '';
+    document.getElementById('pm-image').value   = '';
+    document.getElementById('pm-content').innerHTML = '';
+    document.getElementById('pm-date').value    = new Date().toISOString().split('T')[0];
+    document.getElementById('pm-category').value = 'News';
+    document.getElementById('pm-save-btn').textContent = 'Save Post';
+    document.getElementById('pm-save-btn').disabled    = false;
+    document.getElementById('pm-save-msg').textContent = '';
+    resetUploader('pm', '');
+    document.getElementById('post-modal').classList.add('open');
+  };
+
+  window.editPost = (id) => {
+    const p = DATA.posts.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('post-modal-title').textContent = 'Edit Post';
+    document.getElementById('pm-id').value      = p.id;
+    document.getElementById('pm-title').value   = p.title || '';
+    document.getElementById('pm-excerpt').value = p.excerpt || '';
+    document.getElementById('pm-image').value   = p.image || '';
+    document.getElementById('pm-content').innerHTML = p.content || '';
+    document.getElementById('pm-date').value    = (p.date || '').split('T')[0];
+    document.getElementById('pm-category').value = p.category || 'News';
+    document.getElementById('pm-save-btn').textContent = 'Update Post';
+    document.getElementById('pm-save-btn').disabled    = false;
+    document.getElementById('pm-save-msg').textContent = '';
+    resetUploader('pm', p.image || '');
+    document.getElementById('post-modal').classList.add('open');
+  };
+
+  window.savePost = async () => {
+    const btn     = document.getElementById('pm-save-btn');
+    const msg     = document.getElementById('pm-save-msg');
+    const content = document.getElementById('pm-content').innerHTML.trim();
+    if (!content) { alert('Please write some content.'); return; }
+    btn.disabled = true; btn.textContent = 'Saving…';
+    const id    = document.getElementById('pm-id').value;
+    const dateV = document.getElementById('pm-date').value;
+    try {
+      const imageUrl = await resolveImage('pm');
+      const post = {
+        title:    document.getElementById('pm-title').value.trim(),
+        category: document.getElementById('pm-category').value,
+        excerpt:  document.getElementById('pm-excerpt').value.trim(),
+        image:    imageUrl,
+        content:  content,
+        date:     dateV ? new Date(dateV).toISOString() : new Date().toISOString(),
+      };
+      if (id) post.id = id;
+      await MC.savePost(post);
+      msg.textContent = id ? 'Post updated ✓' : 'Post published ✓';
+      msg.style.color = 'var(--green)';
+      setTimeout(() => closeModal('post-modal'), 1200);
+      await loadAll();
+    } catch (e) {
+      console.error(e);
+      btn.disabled = false; btn.textContent = id ? 'Update Post' : 'Save Post';
+      msg.textContent = 'Error saving. Check console.'; msg.style.color = 'var(--red)';
+    }
+  };
+
+  window.deletePost = async (id) => {
+    if (!confirm('Delete this post? This cannot be undone.')) return;
+    await MC.deletePost(id); await loadAll();
+  };
+
+  /* ── PROGRAM CRUD ── */
+  window.openProgModal = () => {
+    document.getElementById('prog-modal-title').textContent = 'Add Program';
+    document.getElementById('pgm-id').value    = '';
+    document.getElementById('pgm-title').value = '';
+    document.getElementById('pgm-icon').value  = '';
+    document.getElementById('pgm-order').value = '';
+    document.getElementById('pgm-desc').value  = '';
+    document.getElementById('pgm-image').value = '';
+    document.getElementById('pgm-tags').value  = '';
+    resetUploader('pgm', '');
+    document.getElementById('prog-modal').classList.add('open');
+  };
+
+  window.editProgram = (id) => {
+    const p = DATA.programs.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('prog-modal-title').textContent = 'Edit Program';
+    document.getElementById('pgm-id').value    = p.id;
+    document.getElementById('pgm-title').value = p.title || '';
+    document.getElementById('pgm-icon').value  = p.icon || '';
+    document.getElementById('pgm-order').value = p.order || '';
+    document.getElementById('pgm-desc').value  = p.description || '';
+    document.getElementById('pgm-image').value = p.image || '';
+    document.getElementById('pgm-tags').value  = p.tags || '';
+    resetUploader('pgm', p.image || '');
+    document.getElementById('prog-modal').classList.add('open');
+  };
+
+  window.saveProgram = async () => {
+    const id = document.getElementById('pgm-id').value;
+    try {
+      const imageUrl = await resolveImage('pgm');
+      const prog = {
+        title:       document.getElementById('pgm-title').value.trim(),
+        icon:        document.getElementById('pgm-icon').value,
+        order:       parseInt(document.getElementById('pgm-order').value) || Date.now(),
+        description: document.getElementById('pgm-desc').value.trim(),
+        image:       imageUrl,
+        tags:        document.getElementById('pgm-tags').value.trim(),
+      };
+      if (id) prog.id = id;
+      await MC.saveProgram(prog);
+      closeModal('prog-modal'); await loadAll();
+    } catch { alert('Error saving program. Please try again.'); }
+  };
+
+  window.deleteProgram = async (id) => {
+    if (!confirm('Delete this program? This cannot be undone.')) return;
+    await MC.deleteProgram(id); await loadAll();
+  };
+
+  /* ── GALLERY CRUD ── */
+  window.openGallModal = () => {
+    document.getElementById('gall-modal-title').textContent = 'Add Gallery Photo';
+    document.getElementById('gm-id').value    = '';
+    document.getElementById('gm-url').value   = '';
+    document.getElementById('gm-title').value = '';
+    resetUploader('gm', '');
+    document.getElementById('gall-modal').classList.add('open');
+  };
+
+  window.editGallery = (id) => {
+    const item = DATA.gallery.find(x => x.id === id);
+    if (!item) return;
+    document.getElementById('gall-modal-title').textContent = 'Edit Photo';
+    document.getElementById('gm-id').value    = item.id;
+    document.getElementById('gm-url').value   = item.url || '';
+    document.getElementById('gm-title').value = item.title || '';
+    resetUploader('gm', item.url || '');
+    document.getElementById('gall-modal').classList.add('open');
+  };
+
+  window.saveGallery = async () => {
+    try {
+      const id = document.getElementById('gm-id').value;
+      const imageUrl = await resolveImage('gm');
+      if (!imageUrl) { alert('Please upload or paste an image URL.'); return; }
+      const item = { url: imageUrl, title: document.getElementById('gm-title').value.trim() };
+      if (id) item.id = id;
+      await MC.saveGalleryItem(item);
+      closeModal('gall-modal'); await loadAll();
+    } catch { alert('Error saving photo. Please try again.'); }
+  };
+
+  window.deleteGallery = async (id) => {
+    if (!confirm('Delete this photo? This cannot be undone.')) return;
+    await MC.deleteGalleryItem(id); await loadAll();
+  };
+
+  /* ── VOLUNTEER ACTIONS ── */
+  window.approveVol = async (id) => { await MC.updateVolunteer(id, { status:'approved' }); await loadAll(); };
+  window.deleteVol  = async (id) => {
+    if (!confirm('Delete this application? This cannot be undone.')) return;
+    await MC.deleteVolunteer(id); await loadAll();
+  };
+
+  /* current volunteer open in detail modal */
+  let _volModalId = null;
+
+  window.viewVol = (id) => {
+    const v = DATA.volunteers.find(x => x.id === id);
+    if (!v) return;
+    _volModalId = id;
+
+    document.getElementById('vd-modal-name').textContent = `${v.firstName||''} ${v.lastName||v.name||''}`.trim() || 'Volunteer Application';
+    document.getElementById('vd-modal-status').textContent = v.status || 'pending';
+    document.getElementById('vd-modal-status').style.color = v.status === 'approved' ? 'var(--green)' : v.status === 'rejected' ? 'var(--warm-grey)' : 'var(--gold-d)';
+    document.getElementById('vd-approve-btn').style.display = v.status === 'approved' ? 'none' : '';
+
+    document.getElementById('vd-email').textContent       = v.email        || '—';
+    document.getElementById('vd-phone').textContent       = v.phone        || '—';
+    document.getElementById('vd-occupation').textContent  = v.occupation   || '—';
+    document.getElementById('vd-state').textContent       = v.state        || '—';
+    document.getElementById('vd-area').textContent        = v.area         || '—';
+    document.getElementById('vd-availability').textContent= v.availability || '—';
+    document.getElementById('vd-date').textContent        = MC.formatDate(v.date);
+    document.getElementById('vd-source').textContent      = v.source       || '—';
+    document.getElementById('vd-bio').textContent         = v.bio          || '—';
+    document.getElementById('vd-cover').textContent       = v.coverLetter  || '—';
+
+    document.getElementById('vol-modal').classList.add('open');
+  };
+
+  window.approveVolModal = async () => {
+    if (!_volModalId) return;
+    await MC.updateVolunteer(_volModalId, { status: 'approved' });
+    await loadAll();
+    closeModal('vol-modal');
+  };
+
+  window.deleteVolModal = async () => {
+    if (!_volModalId) return;
+    if (!confirm('Delete this application? This cannot be undone.')) return;
+    await MC.deleteVolunteer(_volModalId);
+    await loadAll();
+    closeModal('vol-modal');
+  };
+
+  /* ── JSON EXPORT (all 4 collections) ── */
+  window.exportAll = async () => {
+    const backup = {
+      exportedAt: new Date().toISOString(),
+      posts:      DATA.posts,
+      programs:   DATA.programs,
+      gallery:    DATA.gallery,
+      volunteers: DATA.volunteers,
+    };
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type:'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'mocescod-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    a.click(); URL.revokeObjectURL(url);
+  };
+
+  /* ── JSON IMPORT (all 4 collections) ── */
+  window.importAll = (input) => {
+    const file = input.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const backup = JSON.parse(e.target.result);
+        let count = 0;
+        const importCollection = async (arr, saveFn, existing) => {
+          if (!Array.isArray(arr)) return;
+          const existingIds = new Set(existing.map(x => x.id));
+          for (const item of arr) {
+            if (!existingIds.has(item.id)) { await saveFn({ ...item }); count++; }
+          }
+        };
+        // Support both flat format (posts array) and nested format {posts, programs, gallery, volunteers}
+        const posts     = backup.posts     || (Array.isArray(backup) ? backup : []);
+        const programs  = backup.programs  || [];
+        const gallery   = backup.gallery   || [];
+        const vols      = backup.volunteers|| [];
+        await importCollection(posts,    MC.savePost,         DATA.posts);
+        await importCollection(programs, MC.saveProgram,      DATA.programs);
+        await importCollection(gallery,  MC.saveGalleryItem,  DATA.gallery);
+        await importCollection(vols,     MC.saveVolunteer,    DATA.volunteers);
+        await loadAll();
+        const msg = document.getElementById('import-msg');
+        msg.textContent = `${count} record(s) imported ✓`;
+        msg.style.display = 'inline'; msg.style.color = 'var(--green)';
+        setTimeout(() => msg.style.display = 'none', 5000);
+      } catch (err) { console.error(err); alert('Invalid backup file.'); }
+    };
+    reader.readAsText(file);
+    input.value = '';
+  };
+
+  /* ── DELETE ALL POSTS ── */
+  window.deleteAllPosts = async () => {
+    if (!confirm('DELETE ALL POSTS? Permanent and irreversible.')) return;
+    if (!confirm('Are you absolutely sure?')) return;
+    try {
+      for (const p of DATA.posts) await MC.deletePost(p.id);
+      await loadAll();
+    } catch (err) { alert('Error deleting. Check console.'); console.error(err); }
+  };
+
+</script>
+<!-- VOLUNTEER DETAIL MODAL -->
+<div class="modal-overlay" id="vol-modal">
+  <div class="modal" style="max-width:720px;">
+    <button class="modal-close" onclick="closeModal('vol-modal')">✕</button>
+    <h3 id="vd-modal-name">Volunteer Application</h3>
+
+    <div class="vol-status-bar">
+      <span>Status: <strong id="vd-modal-status">—</strong></span>
+      <button class="tbl-btn tbl-approve" id="vd-approve-btn" onclick="approveVolModal()">✓ Approve</button>
+      <button class="tbl-btn tbl-del" onclick="deleteVolModal()">Delete</button>
+    </div>
+
+    <div class="vol-detail-grid">
+      <div class="vol-detail-field"><span class="vol-detail-label">Email</span><span class="vol-detail-value" id="vd-email">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">Phone</span><span class="vol-detail-value" id="vd-phone">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">Occupation</span><span class="vol-detail-value" id="vd-occupation">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">State</span><span class="vol-detail-value" id="vd-state">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">Area of Interest</span><span class="vol-detail-value" id="vd-area">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">Availability</span><span class="vol-detail-value" id="vd-availability">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">Date Applied</span><span class="vol-detail-value" id="vd-date">—</span></div>
+      <div class="vol-detail-field"><span class="vol-detail-label">How They Found Us</span><span class="vol-detail-value" id="vd-source">—</span></div>
+    </div>
+
+    <div class="mf">
+      <label class="vol-detail-label">About Themselves</label>
+      <div class="vol-cover-block" id="vd-bio">—</div>
+    </div>
+
+    <div class="mf" style="margin-top:1rem;">
+      <label class="vol-detail-label">Cover Letter</label>
+      <div class="vol-cover-block" id="vd-cover">—</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
