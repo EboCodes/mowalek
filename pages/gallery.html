@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — MOCESCOD</title>
+  <meta name="description" content="Photos from MOCESCOD's community development work across Nigeria.">
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .gallery-hero { padding:calc(var(--nav-h) + 4rem) 0 3rem; border-bottom:1px solid var(--border); }
+    .gallery-hero h1 { margin-top:0.75rem; }
+    .gallery-hero p { color:var(--warm-grey); font-style:italic; margin-top:0.5rem; }
+
+    .gallery-section { padding:4rem 0 7rem; }
+    .gallery-grid {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:1rem;
+    }
+    .gallery-item { position:relative; overflow:hidden; cursor:pointer; }
+    .gallery-item img { width:100%; aspect-ratio:4/3; object-fit:cover; transition:transform 0.5s ease; display:block; }
+    .gallery-item:hover img { transform:scale(1.06); }
+    .gallery-item-overlay {
+      position:absolute; inset:0;
+      background:rgba(43,106,63,0.0);
+      display:flex; align-items:flex-end;
+      padding:1.2rem;
+      transition:background 0.3s;
+    }
+    .gallery-item:hover .gallery-item-overlay { background:rgba(43,106,63,0.65); }
+    .gallery-item-title {
+      font-family:var(--sans); font-size:0.82rem; font-weight:500;
+      color:var(--white); opacity:0; transform:translateY(8px);
+      transition:opacity 0.3s, transform 0.3s;
+      letter-spacing:0.06em;
+    }
+    .gallery-item:hover .gallery-item-title { opacity:1; transform:translateY(0); }
+    .gallery-item.featured { grid-column:span 2; grid-row:span 2; }
+    .gallery-item.featured img { aspect-ratio:auto; height:100%; }
+
+    /* LIGHTBOX */
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; padding:2rem; }
+    .lightbox.open { display:flex; }
+    .lightbox-img { max-width:90vw; max-height:85vh; object-fit:contain; }
+    .lightbox-close { position:absolute; top:1.5rem; right:1.5rem; color:var(--white); font-size:2rem; cursor:pointer; background:none; border:none; line-height:1; opacity:0.7; transition:opacity 0.2s; }
+    .lightbox-close:hover { opacity:1; }
+    .lightbox-caption { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.7); font-family:var(--sans); font-size:0.85rem; letter-spacing:0.08em; }
+
+    .no-gallery { text-align:center; padding:5rem 0; font-family:var(--sans); color:var(--warm-grey); }
+
+    @media(max-width:900px) { .gallery-grid { grid-template-columns:repeat(2,1fr); } .gallery-item.featured { grid-column:span 1; grid-row:span 1; } }
+    @media(max-width:560px) { .gallery-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="programs.html">Programs</a></li><li><a href="blog.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="nav-donate-btn">Donate</a>
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">Home</a><a href="about.html">About</a><a href="programs.html">Programs</a>
+    <a href="blog.html">News</a><a href="gallery.html">Gallery</a><a href="volunteer.html">Volunteer</a>
+    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);font-weight:600;">Donate →</a>
+  </div>
+
+  <main>
+    <section class="gallery-hero">
+      <div class="container">
+        <p class="section-label">Visual Stories</p>
+        <h1>Gallery</h1>
+        <p>Pictures from our work in communities across Nigeria.</p>
+      </div>
+    </section>
+
+    <section class="gallery-section">
+      <div class="container">
+        <div class="gallery-grid" id="gallery-grid">
+          <p style="font-family:var(--sans);color:var(--warm-grey);">Loading gallery…</p>
+        </div>
+        <div id="no-gallery" class="no-gallery" style="display:none;"><p>No gallery items yet.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities through sustainable development.</p></div>
+      <div class="footer-col"><h4>Organisation</h4><a href="about.html">About</a><a href="programs.html">Programs</a><a href="blog.html">News</a></div>
+      <div class="footer-col"><h4>Get Involved</h4><a href="volunteer.html">Volunteer</a><a href="donate.html">Donate</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Instagram</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 MOCESCOD. All rights reserved.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+  </footer>
+
+  <script type="module">
+    import '../js/global.js';
+    async function init() {
+      const grid    = document.getElementById('gallery-grid');
+      const noGal   = document.getElementById('no-gallery');
+      const items   = await MC.getGallery();
+      if (!items.length) { grid.innerHTML = ''; noGal.style.display = 'block'; return; }
+      grid.innerHTML = items.map((item, i) => `
+        <div class="gallery-item ${i === 0 ? 'featured' : ''}" onclick="openLightbox('${item.url}','${(item.title||'').replace(/'/g,"\\'")}')">
+          <img src="${item.url}" alt="${item.title || 'Gallery image'}" loading="lazy">
+          <div class="gallery-item-overlay">
+            <span class="gallery-item-title">${item.title || ''}</span>
+          </div>
+        </div>`).join('');
+    }
+
+    window.openLightbox = (url, title) => {
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox-caption').textContent = title;
+      document.getElementById('lightbox').classList.add('open');
+    };
+    window.closeLightbox = (e) => {
+      if (e.target === document.getElementById('lightbox')) document.getElementById('lightbox').classList.remove('open');
+    };
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('open'); });
+    init();
+  </script>
+</body>
+</html>

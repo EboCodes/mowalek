@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News & Blog — MOCESCOD</title>
+  <meta name="description" content="Latest news, stories and updates from MOCESCOD community development programmes.">
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .blog-hero { padding:calc(var(--nav-h) + 4rem) 0 3rem; border-bottom:1px solid var(--border); }
+    .blog-hero h1 { margin-top:0.75rem; }
+    .blog-hero-sub { font-size:1rem; color:var(--warm-grey); font-style:italic; margin-top:0.5rem; }
+
+    .filter-bar { padding:1.5rem 0; border-bottom:1px solid var(--border); background:var(--cream2); position:sticky; top:var(--nav-h); z-index:10; }
+    .filter-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; }
+    .search-wrap { position:relative; display:flex; align-items:center; flex:1; max-width:320px; }
+    .search-icon { position:absolute; left:0.85rem; color:var(--warm-grey); pointer-events:none; width:15px; height:15px; }
+    .search-input { width:100%; padding:0.5rem 2.5rem 0.5rem 2.4rem; border:1px solid var(--border); background:var(--white); font-family:var(--sans); font-size:0.85rem; color:var(--ink); outline:none; transition:border-color 0.2s; }
+    .search-input:focus { border-color:var(--green); }
+    .search-clear { position:absolute; right:0.7rem; background:none; border:none; cursor:pointer; color:var(--warm-grey); font-size:0.8rem; display:none; }
+    .filter-pills { display:flex; gap:0.5rem; flex-wrap:wrap; }
+    .filter-pill { font-family:var(--sans); font-size:0.75rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:0.45rem 1rem; border:1.5px solid var(--border); background:none; color:var(--warm-grey); cursor:pointer; transition:all 0.2s; }
+    .filter-pill:hover { border-color:var(--green); color:var(--green); }
+    .filter-pill.active { background:var(--green); color:var(--white); border-color:var(--green); }
+
+    .blog-posts-section { padding:4rem 0 7rem; }
+    .blog-posts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3rem 2rem; }
+    .no-posts { text-align:center; padding:5rem 0; font-family:var(--sans); color:var(--warm-grey); }
+
+    @media(max-width:900px) { .blog-posts-grid { grid-template-columns:repeat(2,1fr); } .search-wrap { max-width:100%; } }
+    @media(max-width:560px) { .blog-posts-grid { grid-template-columns:1fr; } .filter-inner { flex-direction:column; align-items:flex-start; } }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="programs.html">Programs</a></li><li><a href="blog.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="nav-donate-btn">Donate</a>
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">Home</a><a href="about.html">About</a><a href="programs.html">Programs</a>
+    <a href="blog.html">News</a><a href="gallery.html">Gallery</a><a href="volunteer.html">Volunteer</a>
+    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);font-weight:600;">Donate →</a>
+  </div>
+
+  <main>
+    <section class="blog-hero">
+      <div class="container">
+        <p class="section-label">All Posts</p>
+        <h1>News & Stories</h1>
+        <p class="blog-hero-sub">Updates, programme highlights and community stories from across MOCESCOD's work.</p>
+      </div>
+    </section>
+
+    <section class="filter-bar">
+      <div class="container">
+        <div class="filter-inner">
+          <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="search-input" class="search-input" placeholder="Search posts…" oninput="handleSearch(this.value)" aria-label="Search">
+            <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+          </div>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-cat="all">All</button>
+            <button class="filter-pill" data-cat="News">News</button>
+            <button class="filter-pill" data-cat="Programs">Programs</button>
+            <button class="filter-pill" data-cat="Reports">Reports</button>
+            <button class="filter-pill" data-cat="Stories">Stories</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="blog-posts-section">
+      <div class="container">
+        <div class="blog-posts-grid" id="blog-posts">
+          <p style="font-family:var(--sans);color:var(--warm-grey);grid-column:1/-1;">Loading posts…</p>
+        </div>
+        <div id="no-posts" class="no-posts" style="display:none;"><p id="no-posts-msg">No posts found.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities through sustainable development.</p></div>
+      <div class="footer-col"><h4>Organisation</h4><a href="about.html">About Us</a><a href="programs.html">Programs</a><a href="blog.html">News</a></div>
+      <div class="footer-col"><h4>Get Involved</h4><a href="volunteer.html">Volunteer</a><a href="donate.html">Donate</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 MOCESCOD. All rights reserved.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+  </footer>
+
+  <script type="module">
+    import '../js/global.js';
+    let allPosts = [], activeCat = 'all', searchVal = '';
+
+    async function init() {
+      await MC.seedIfEmpty();
+      allPosts = await MC.getPosts();
+      render();
+    }
+
+    function render() {
+      const grid   = document.getElementById('blog-posts');
+      const noPost = document.getElementById('no-posts');
+      const noMsg  = document.getElementById('no-posts-msg');
+      let posts    = activeCat === 'all' ? allPosts : allPosts.filter(p => p.category === activeCat);
+      if (searchVal.trim()) {
+        const q = searchVal.toLowerCase();
+        posts = posts.filter(p => (p.title||'').toLowerCase().includes(q) || (p.excerpt||'').toLowerCase().includes(q));
+      }
+      if (!posts.length) {
+        grid.innerHTML = '';
+        noMsg.textContent = searchVal.trim() ? 'No posts match your search.' : 'No posts in this category yet.';
+        noPost.style.display = 'block'; return;
+      }
+      noPost.style.display = 'none';
+      grid.innerHTML = posts.map(p => `<div>${MC.renderCard(p)}</div>`).join('');
+    }
+
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        this.classList.add('active'); activeCat = this.dataset.cat; render();
+      });
+    });
+
+    window.handleSearch = (val) => { searchVal = val; document.getElementById('search-clear').style.display = val ? 'inline' : 'none'; render(); };
+    window.clearSearch  = () => { searchVal = ''; document.getElementById('search-input').value = ''; document.getElementById('search-clear').style.display = 'none'; render(); };
+    init();
+  </script>
+</body>
+</html>

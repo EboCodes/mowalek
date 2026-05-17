@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate — MOCESCOD</title>
+  <meta name="description" content="Support MOCESCOD's community development work across Nigeria.">
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .donate-hero { padding:calc(var(--nav-h) + 5rem) 0 5rem; background:var(--navy); position:relative; overflow:hidden; }
+    .donate-hero::before { content:''; position:absolute; inset:0; background:url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=80') center/cover; opacity:0.12; }
+    .donate-hero-inner { position:relative; z-index:1; text-align:center; max-width:660px; margin:0 auto; }
+    .donate-hero h1 { color:var(--white); margin-top:0.75rem; }
+    .donate-hero p { color:rgba(248,244,236,0.75); margin-top:1rem; font-family:var(--sans); font-size:1.05rem; line-height:1.7; }
+
+    .donate-main { padding:7rem 0; }
+    .donate-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:6rem; align-items:start; }
+
+    .donate-form-card { background:var(--white); padding:3rem; }
+    .donate-form-card h3 { color:var(--navy); margin-bottom:2rem; font-size:1.5rem; }
+
+    .amount-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; margin-bottom:1rem; }
+    .amount-btn {
+      font-family:var(--sans); font-size:1rem; font-weight:600;
+      padding:0.9rem; border:2px solid var(--border);
+      background:var(--cream); color:var(--ink); cursor:pointer;
+      transition:all 0.2s; text-align:center;
+    }
+    .amount-btn:hover, .amount-btn.active { border-color:var(--green); background:var(--green); color:var(--white); }
+
+    .form-field { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.2rem; }
+    .form-field label { font-family:var(--sans); font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--warm-grey); }
+    .form-field input, .form-field select {
+      padding:0.8rem 1rem; border:1.5px solid var(--border);
+      background:var(--cream); color:var(--ink);
+      font-family:var(--sans); font-size:0.92rem;
+      outline:none; transition:border-color 0.2s;
+    }
+    .form-field input:focus, .form-field select:focus { border-color:var(--green); }
+
+    .secure-note { display:flex; align-items:center; gap:0.5rem; font-family:var(--sans); font-size:0.75rem; color:var(--warm-grey); margin-top:0.75rem; }
+
+    .impact-info h3 { color:var(--navy); margin-bottom:2rem; font-size:1.3rem; }
+    .impact-point { display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1.5rem; }
+    .impact-point:last-child { border-bottom:none; }
+    .ip-amount { font-family:var(--serif-display); font-size:1.5rem; color:var(--green); min-width:80px; }
+    .ip-text h4 { font-size:0.95rem; margin-bottom:0.3rem; font-family:var(--sans); font-weight:600; }
+    .ip-text p { font-size:0.85rem; color:var(--warm-grey); line-height:1.6; margin:0; }
+
+    .donate-trust { padding:5rem 0; background:var(--cream2); text-align:center; }
+    .trust-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:3rem; }
+    .trust-item { padding:2rem; }
+    .trust-icon { font-size:2.5rem; margin-bottom:1rem; display:block; }
+    .trust-item h4 { font-size:1rem; color:var(--navy); margin-bottom:0.5rem; font-family:var(--sans); font-weight:600; }
+    .trust-item p { font-size:0.85rem; color:var(--warm-grey); line-height:1.65; }
+
+    /* Coming soon layout */
+    .coming-soon-wrap { display:grid; grid-template-columns:1.2fr 1fr; gap:6rem; align-items:start; }
+    .coming-soon-card { background:var(--white); padding:3rem; }
+    .cs-label { display:inline-block; font-family:var(--sans); font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); background:var(--green); padding:0.3rem 0.9rem; margin-bottom:1.5rem; }
+    .cs-heading { font-size:clamp(1.8rem,3vw,2.6rem); color:var(--navy); line-height:1.2; margin-bottom:1.25rem; }
+    .cs-heading em { font-style:italic; color:var(--green); }
+    .cs-body { font-family:var(--sans); font-size:0.92rem; line-height:1.8; color:var(--warm-grey); margin-bottom:2rem; }
+
+    /* Bank details */
+    .cs-bank { background:var(--cream); border-left:3px solid var(--gold); padding:1.25rem 1.5rem; margin-bottom:2rem; }
+    .cs-bank-label { font-family:var(--sans); font-size:0.68rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:0.85rem; display:block; }
+    .cs-bank-row { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; padding:0.5rem 0; border-bottom:1px solid var(--border); font-family:var(--sans); font-size:0.85rem; }
+    .cs-bank-row:last-child { border-bottom:none; }
+    .cs-bank-row span { color:var(--warm-grey); flex-shrink:0; }
+    .cs-bank-row strong { color:var(--ink); text-align:right; }
+
+    /* Notify form */
+    .cs-notify { margin-bottom:0.5rem; }
+    .cs-notify-form { display:flex; gap:0.75rem; margin-top:0.75rem; flex-wrap:wrap; }
+    .cs-notify-form input { flex:1; min-width:180px; padding:0.75rem 1rem; border:1.5px solid var(--border); background:var(--cream); color:var(--ink); font-family:var(--sans); font-size:0.88rem; outline:none; transition:border-color 0.2s; }
+    .cs-notify-form input:focus { border-color:var(--green); }
+
+    @media(max-width:900px) {
+      .coming-soon-wrap { grid-template-columns:1fr; gap:3rem; }
+      .trust-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="programs.html">Programs</a></li><li><a href="blog.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="nav-donate-btn">Donate</a>
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">Home</a><a href="about.html">About</a><a href="programs.html">Programs</a>
+    <a href="blog.html">News</a><a href="gallery.html">Gallery</a><a href="volunteer.html">Volunteer</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <main>
+    <section class="donate-hero">
+      <div class="container donate-hero-inner">
+        <p class="section-label" style="justify-content:center;color:rgba(201,169,110,0.9);">Make a Difference</p>
+        <h1>Support Our Work</h1>
+        <p>Your donation funds programmes that directly change lives — from vocational training for young Nigerians to health outreach for rural families.</p>
+      </div>
+    </section>
+
+    <section class="donate-main">
+      <div class="container">
+        <div class="coming-soon-wrap">
+
+          <!-- Left: coming soon card -->
+          <div class="coming-soon-card">
+            <span class="cs-label">Coming Soon</span>
+            <h2 class="cs-heading">Online Donations<br><em>Launching Shortly</em></h2>
+            <p class="cs-body">We are currently setting up our secure online payment system. In the meantime, you can reach out to us directly to make a donation — we'd love to hear from you.</p>
+
+            <!-- Bank details -->
+            <div class="cs-bank">
+              <p class="cs-bank-label">Direct Bank Transfer</p>
+              <div class="cs-bank-row"><span>Bank</span><strong> To be updated</strong></div>
+              <div class="cs-bank-row"><span>Account Name</span><strong>Mowalek Centre for Sustainable Community Development</strong></div>
+              <div class="cs-bank-row"><span>Account Number</span><strong> To be updated </strong></div>
+            </div>
+
+            <!-- Notify me -->
+            <div class="cs-notify">
+              <p class="cs-bank-label">Get notified when donations go live</p>
+              <form class="cs-notify-form" onsubmit="handleNotify(event)">
+                <input type="email" id="cs-email" placeholder="your@email.com" required>
+                <button type="submit" class="btn btn-filled" id="cs-btn">Notify Me <span class="arr">→</span></button>
+              </form>
+              <p id="cs-thanks" style="display:none;font-family:var(--sans);font-size:0.85rem;color:var(--green);margin-top:0.75rem;">✅ You're on the list — we'll let you know!</p>
+            </div>
+
+            <a href="contact.html" class="btn btn-outline" style="margin-top:1.5rem;display:inline-flex;">Contact Us to Donate <span class="arr">→</span></a>
+          </div>
+
+          <!-- Right: impact info (kept) -->
+          <div class="impact-info">
+            <h3>Your Donation Impact</h3>
+            <div class="impact-point"><div class="ip-amount"><!--₦5,000--></div><div class="ip-text"><h4>School Supplies</h4><p>Provides exercise books, pens and learning materials for one student for a term.</p></div></div>
+            <div class="impact-point"><div class="ip-amount"><!--₦10,000--></div><div class="ip-text"><h4>Health Screening</h4><p>Funds malaria testing and treatment for a family of four in our mobile health clinics.</p></div></div>
+            <div class="impact-point"><div class="ip-amount"><!--₦25,000--></div><div class="ip-text"><h4>Vocational Training</h4><p>Covers one week of skills training materials for youth in our empowerment programme.</p></div></div>
+            <div class="impact-point"><div class="ip-amount"><!--₦100,000--></div><div class="ip-text"><h4>Community Outreach</h4><p>Funds a full day of community outreach reaching up to 50 families with health and education services.</p></div></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="donate-trust">
+      <div class="container">
+        <p class="section-label" style="justify-content:center;">Our Commitment</p>
+        <h2 style="margin-top:0.75rem;">Your trust matters</h2>
+        <div class="trust-grid">
+          <div class="trust-item"><span class="trust-icon">📊</span><h4>Full Transparency</h4><p>We publish annual reports detailing exactly how every donation is used across our programmes.</p></div>
+          <div class="trust-item"><span class="trust-icon">🏛️</span><h4>Registered NGO</h4><p>MOCESCOD is a legally registered non-governmental organisation operating under Nigerian law.</p></div>
+          <div class="trust-item"><span class="trust-icon">💚</span><h4>100% to Communities</h4><p>All programmatic funds go directly to community work. Administrative costs are kept minimal.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities.</p></div>
+      <div class="footer-col"><h4>Organisation</h4><a href="about.html">About</a><a href="programs.html">Programs</a><a href="blog.html">News</a></div>
+      <div class="footer-col"><h4>Get Involved</h4><a href="volunteer.html">Volunteer</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Instagram</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 MOCESCOD.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+  </footer>
+
+  <script type="module">
+    import '../js/global.js';
+    window.handleNotify = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('cs-btn');
+      btn.textContent = 'Saving…'; btn.disabled = true;
+      try {
+        await MC.saveVolunteer({
+          type:  'donation_notify',
+          email: document.getElementById('cs-email').value.trim(),
+          date:  new Date().toISOString(),
+        });
+      } catch(err) { console.error(err); }
+      document.getElementById('cs-thanks').style.display = 'block';
+      document.getElementById('cs-email').value = '';
+      btn.textContent = 'Notify Me →'; btn.disabled = false;
+    };
+  </script>
+</body>
+</html>

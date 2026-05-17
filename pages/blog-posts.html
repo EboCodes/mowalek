@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOCESCOD — Article</title>
+  <meta name="description" content="News and stories from MOCESCOD.">
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .post-loading { padding:10rem 5vw; font-family:var(--sans); color:var(--warm-grey); text-align:center; }
+    .post-hero { min-height:60vh; background-size:cover; background-position:center; display:flex; align-items:flex-end; padding-bottom:5rem; position:relative; overflow:hidden; padding-top:var(--nav-h); }
+    .post-hero-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(28,40,28,0.92) 0%,rgba(28,40,28,0.45) 60%,rgba(28,40,28,0.2) 100%); }
+    .post-hero-content { position:relative; z-index:1; max-width:780px; }
+    .post-back { display:inline-block; font-family:var(--sans); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(248,244,236,0.65); margin-bottom:1.5rem; transition:color 0.2s; }
+    .post-back:hover { color:var(--white); }
+    .post-meta-top { display:flex; align-items:center; gap:0.75rem; font-family:var(--sans); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(248,244,236,0.6); margin-bottom:1rem; }
+    .post-cat { color:var(--gold); }
+    .post-hero-content h1 { color:var(--white); margin-bottom:1rem; font-size:clamp(1.8rem,4vw,3rem); }
+    .post-excerpt { color:rgba(248,244,236,0.75); font-size:1.05rem; font-weight:300; }
+    .post-body { padding:5rem 5vw 6rem; }
+    .post-body-inner { max-width:700px; margin:0 auto; font-size:1.08rem; line-height:1.85; color:var(--ink); }
+    .post-body-inner p { margin-bottom:1.6rem; }
+    .post-body-inner h2 { font-size:1.6rem; margin:2.5rem 0 0.75rem; color:var(--navy); }
+    .post-body-inner h3 { font-size:1.2rem; margin:2rem 0 0.6rem; }
+    .post-body-inner blockquote { border-left:4px solid var(--green); margin:2rem 0; padding:0.5rem 0 0.5rem 1.5rem; font-style:italic; color:var(--warm-grey); }
+    .post-footer { max-width:700px; margin:3rem auto 0; padding-top:2.5rem; border-top:1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="programs.html">Programs</a></li><li><a href="blog.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="donate.html" class="nav-donate-btn">Donate</a>
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="../index.html">Home</a><a href="about.html">About</a><a href="programs.html">Programs</a>
+    <a href="blog.html">News</a><a href="gallery.html">Gallery</a><a href="volunteer.html">Volunteer</a>
+    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);font-weight:600;">Donate →</a>
+  </div>
+
+  <main id="post-main">
+    <div class="post-loading">Loading article…</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities.</p></div>
+      <div class="footer-col"><h4>Organisation</h4><a href="about.html">About</a><a href="programs.html">Programs</a></div>
+      <div class="footer-col"><h4>Get Involved</h4><a href="volunteer.html">Volunteer</a><a href="donate.html">Donate</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Instagram</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 MOCESCOD.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+  </footer>
+
+  <script type="module">
+    import '../js/global.js';
+    async function init() {
+      const params = new URLSearchParams(location.search);
+      const id   = params.get('id');
+      const main = document.getElementById('post-main');
+      if (!id) { main.innerHTML = '<div style="padding:8rem 5vw;font-family:var(--sans);">Post not found. <a href="blog.html">Back to news</a></div>'; return; }
+      const post = await MC.getPost(id);
+      if (!post) { main.innerHTML = '<div style="padding:8rem 5vw;font-family:var(--sans);">Post not found. <a href="blog.html">Back to news</a></div>'; return; }
+      const img = post.image || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1400&q=85';
+      document.title = post.title + ' — MOCESCOD';
+      main.innerHTML = `
+        <section class="post-hero" style="background-image:url('${img}')">
+          <div class="post-hero-overlay"></div>
+          <div class="post-hero-content container">
+            <a href="blog.html" class="post-back">← All News</a>
+            <div class="post-meta-top"><span class="post-cat">${post.category || 'News'}</span><span>·</span><span>${MC.formatDate(post.date)}</span></div>
+            <h1>${post.title}</h1>
+            ${post.excerpt ? `<p class="post-excerpt">${post.excerpt}</p>` : ''}
+          </div>
+        </section>
+        <article class="post-body">
+          <div class="post-body-inner">${post.content}</div>
+          <div class="post-footer"><a href="blog.html" class="btn btn-outline">← Back to News</a></div>
+        </article>`;
+    }
+    init();
+  </script>
+</body>
+</html>
