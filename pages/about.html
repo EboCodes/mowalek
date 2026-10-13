@@ -3,74 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - MOCESCOD</title>
+  <title>About Us — MOCESCOD</title>
   <meta name="description" content="Learn about MOCESCOD — our mission, vision, history and the team behind Nigeria's community development work.">
   <link rel="stylesheet" href="../css/global.css">
   <style>
-    .about-hero {
-      padding: calc(var(--nav-h) + 5rem) 0 0;
-      background: var(--navy);
-      position: relative; overflow: hidden;
-    }
-    .about-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: url('https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1600&q=80') center/cover;
-      opacity: 0.18;
-    }
-    .about-hero-content { position: relative; z-index: 1; padding: 0 5vw 6rem; max-width: var(--max-w); margin: 0 auto; }
-    .about-hero h1 { color: var(--white); margin-top: 0.75rem; }
-    .about-hero h1 em { font-style: italic; color: var(--gold); }
-    .about-hero p { color: rgba(248,244,236,0.75); max-width: 560px; margin-top: 1.2rem; font-family: var(--sans); font-size: 1.05rem; line-height: 1.7; }
+    .about-hero { padding: var(--space-xl) 0 var(--space-2xl); border-bottom: 1px solid var(--hairline); }
+    .about-hero p { margin-top: var(--space-lg); max-width: 60ch; font-family: var(--serif); font-size: 1.15rem; line-height: 1.7; color: var(--warm-grey); }
 
-    .about-main { padding: 7rem 0; }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-    .about-text p { color: var(--warm-grey); margin-bottom: 1.2rem; font-size: 1rem; }
-    .about-text h2 { margin-bottom: 1.5rem; }
+    .about-main { padding: var(--space-3xl) 0; }
+    .about-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: var(--space-2xl); align-items: start; }
+    .about-text p { margin-bottom: var(--space-md); font-size: 1rem; }
+    .about-img-main img { width: 100%; height: 520px; object-fit: cover; border: 1px solid var(--hairline); }
+    .about-img-main .caption { margin-top: 0.75rem; display: block; }
 
-    .about-img-stack { position: relative; }
-    .about-img-main img { width: 100%; height: 480px; object-fit: cover; }
-    .about-img-accent {
-      position: absolute; bottom: -2rem; right: -2rem;
-      width: 200px; border: 4px solid var(--white);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    }
-    .about-img-accent img { width: 100%; height: 140px; object-fit: cover; }
+    .mv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); margin-top: var(--space-xl); }
+    .mv-card { background: var(--cream); padding: var(--space-xl); }
+    .mv-card h3 { font-size: 1.25rem; margin-bottom: 0.85rem; }
+    .mv-card p { font-size: 0.92rem; }
 
-    .mv-section { padding: 6rem 0; background: var(--cream2); }
-    .mv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; }
-    .mv-card {
-      background: var(--white); padding: 2.5rem 2rem;
-      border-top: 4px solid var(--green);
-    }
-    .mv-card.navy { border-color: var(--navy); }
-    .mv-card.gold { border-color: var(--gold); }
-    .mv-card h3 { color: var(--navy); margin-bottom: 1rem; }
-    .mv-card p { color: var(--warm-grey); font-size: 0.92rem; line-height: 1.7; }
+    .values-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl); align-items: center; }
+    .value-item { display: flex; gap: var(--space-lg); padding: var(--space-lg) 0; border-bottom: 1px solid var(--hairline); align-items: flex-start; }
+    .value-item:first-child { border-top: 1px solid var(--hairline); }
+    .value-num { font-family: var(--serif); font-weight: 300; font-size: 1.9rem; color: var(--gold); line-height: 1; flex-shrink: 0; width: 2.5rem; }
+    .value-item h4 { font-size: 1rem; margin-bottom: 0.4rem; font-family: var(--serif); font-weight: 600; }
+    .value-item p { font-size: 0.9rem; margin: 0; }
+    .values-image img { width: 100%; height: 540px; object-fit: cover; border: 1px solid var(--hairline); }
 
-    .values-section { padding: 6rem 0; }
-    .values-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
-    .values-list { display: flex; flex-direction: column; gap: 0; }
-    .value-item { display: flex; gap: 1.5rem; padding: 1.8rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
-    .value-item:first-child { border-top: 1px solid var(--border); }
-    .value-num { font-family: var(--serif-display); font-size: 2rem; color: var(--gold); opacity: 0.5; line-height: 1; flex-shrink: 0; width: 2.5rem; }
-    .value-item h4 { font-size: 1rem; margin-bottom: 0.4rem; font-family: var(--serif-display); }
-    .value-item p { font-size: 0.88rem; color: var(--warm-grey); line-height: 1.65; margin: 0; }
-    .values-image img { width: 100%; height: 560px; object-fit: cover; }
-
-    .team-section { padding: 7rem 0; background: var(--navy); }
-    .team-section .section-label { color: rgba(201,169,110,0.9); }
-    .team-section h2 { color: var(--white); margin-top: 0.75rem; margin-bottom: 3rem; }
-    .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
-    .team-card { text-align: center; }
-    .team-card img { width: 100%; height: 280px; object-fit: cover; object-position: top; filter: grayscale(20%); }
-    .team-card h3 { color: var(--white); margin-top: 1.2rem; font-size: 1.1rem; }
-    .team-card p { color: var(--gold); font-family: var(--sans); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-xl); margin-top: var(--space-xl); }
+    .team-card img { width: 100%; height: 300px; object-fit: cover; object-position: top; filter: grayscale(35%); border: 1px solid rgba(255,255,255,0.15); }
+    .team-card h3 { font-size: 1.1rem; margin-top: var(--space-md); font-family: var(--serif); font-weight: 500; }
+    .team-card .label-caps { color: var(--gold); margin-top: 0.3rem; display: block; }
 
     @media (max-width: 900px) {
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .about-img-accent { display: none; }
+      .about-grid, .values-inner { grid-template-columns: 1fr; gap: var(--space-xl); }
       .mv-grid { grid-template-columns: 1fr; }
-      .values-inner { grid-template-columns: 1fr; gap: 3rem; }
       .team-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 560px) { .team-grid { grid-template-columns: 1fr; } }
@@ -80,59 +46,55 @@
   <nav class="site-nav">
     <a href="../index.html" class="nav-logo">
       <img src="../logo.jpeg" alt="MOCESCOD">
-      <div class="nav-logo-text">MOCE<span>SCOD</span></div>
+      <div><div class="nav-logo-text">MOCE<span>SCOD</span></div><span class="nav-logo-sub">Mowalek Centre</span></div>
     </a>
     <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
+      <li><a href="about.html" class="active">About</a></li>
       <li><a href="programs.html">Programs</a></li>
       <li><a href="blog.html">News</a></li>
       <li><a href="gallery.html">Gallery</a></li>
       <li><a href="volunteer.html">Volunteer</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="donate.html" class="nav-donate-btn">Donate</a>
-    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="nav-right">
+      <a href="donate.html" class="nav-donate-btn">Donate</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
   </nav>
   <div class="nav-drawer" id="nav-drawer">
     <a href="../index.html">Home</a><a href="about.html">About</a><a href="programs.html">Programs</a>
     <a href="blog.html">News</a><a href="gallery.html">Gallery</a><a href="volunteer.html">Volunteer</a>
-    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);font-weight:600;">Donate →</a>
+    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);">Donate →</a>
   </div>
 
   <main>
     <section class="about-hero">
-      <div class="about-hero-content">
-        <p class="section-label" style="color:rgba(201,169,110,0.9);">About MOCESCOD</p>
-        <h1>Rooted in community.<br><em>Driven by purpose.</em></h1>
+      <div class="container">
+        <p class="section-label">About MOCESCOD</p>
+        <h1 class="mt-md">Rooted in community.<br><em>Driven by purpose.</em></h1>
         <p>For over a decade, MOCESCOD has worked alongside Nigerian communities to build lasting change through education, health, livelihoods and sustainable development.</p>
       </div>
     </section>
 
     <section class="about-main">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-text">
-            <p class="section-label">Our Story</p>
-            <h2 style="margin-top:0.75rem;">Why MOCESCOD Exists</h2>
-            <p>MOCESCOD — the Mowalek Centre for Sustainable Community Development — was founded on a simple but powerful conviction: that every Nigerian community, no matter how underserved, has the capacity to thrive when given the right support and opportunities.</p>
-            <p>We work in some of the most vulnerable communities across Nigeria, delivering programmes in youth empowerment, healthcare access, education support, and food security. Our approach is always participatory — we listen before we act.</p>
-            <p>What sets us apart is our commitment to sustainability. We don't just deliver services; we build local capacity so communities can continue to grow long after our programmes conclude.</p>
-            <a href="programs.html" class="btn btn-outline" style="margin-top:1.5rem;">See Our Programs <span class="arr">→</span></a>
-          </div>
-          <div class="about-img-stack">
-            <div class="about-img-main">
-              <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80" alt="Community work">
-            </div>
-            <div class="about-img-accent">
-              <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80" alt="Training session">
-            </div>
-          </div>
+      <div class="container about-grid">
+        <div class="about-text">
+          <p class="section-label">Our Story</p>
+          <h2 class="mt-lg">Why MOCESCOD exists</h2>
+          <p class="mt-lg">MOCESCOD, the Mowalek Centre for Sustainable Community Development, was founded on a simple but powerful conviction: that every Nigerian community, no matter how underserved, has the capacity to thrive when given the right support and opportunities.</p>
+          <p>We work in some of the most vulnerable communities across Nigeria, delivering programmes in youth empowerment, healthcare access, education support, and food security. Our approach is always participatory, we listen before we act.</p>
+          <p>What sets us apart is our commitment to sustainability. We don't just deliver services, we build local capacity so communities can continue to grow long after our programmes conclude.</p>
+          <a href="programs.html" class="btn btn-outline mt-xl">See Our Programs <span class="arr">→</span></a>
+        </div>
+        <div class="about-img-main">
+          <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=900&q=80" alt="Community work">
+          <span class="caption">Fig. 01 — Field programme activity</span>
         </div>
       </div>
     </section>
 
-    <section class="mv-section">
+    <section class="section bg-parchment">
       <div class="container">
         <p class="section-label">Our Foundation</p>
         <div class="mv-grid">
@@ -140,11 +102,11 @@
             <h3>Our Mission</h3>
             <p>To empower individuals and communities in Nigeria through sustainable development programmes that address poverty, inequality and lack of opportunity at the grassroots level.</p>
           </div>
-          <div class="mv-card navy">
+          <div class="mv-card">
             <h3>Our Vision</h3>
             <p>A Nigeria where every community has the resources, skills and opportunities to achieve sustainable development and where no person is left behind.</p>
           </div>
-          <div class="mv-card gold">
+          <div class="mv-card">
             <h3>Our Approach</h3>
             <p>Community-led, data-informed and partnership-driven. We co-design every programme with the people it serves to ensure relevance, ownership and lasting impact.</p>
           </div>
@@ -152,61 +114,47 @@
       </div>
     </section>
 
-    <section class="values-section">
-      <div class="container">
-        <div class="values-inner">
-          <div>
-            <p class="section-label">Core Values</p>
-            <h2 style="margin-top:0.75rem; margin-bottom:0;">What guides us</h2>
-            <div class="values-list" style="margin-top:2rem;">
-              <div class="value-item"><span class="value-num">01</span><div><h4>Integrity</h4><p>We are transparent in our operations, honest with stakeholders and accountable in all we do.</p></div></div>
-              <div class="value-item"><span class="value-num">02</span><div><h4>Inclusion</h4><p>We prioritise the most marginalised — women, youth, persons with disabilities and rural communities.</p></div></div>
-              <div class="value-item"><span class="value-num">03</span><div><h4>Sustainability</h4><p>Every programme is designed to outlast our involvement, building local capacity not dependency.</p></div></div>
-              <div class="value-item"><span class="value-num">04</span><div><h4>Collaboration</h4><p>We work with government, civil society and communities — because lasting change requires all hands.</p></div></div>
-            </div>
+    <section class="section">
+      <div class="container values-inner">
+        <div>
+          <p class="section-label">Core Values</p>
+          <h2 class="mt-lg">What guides us</h2>
+          <div class="mt-xl">
+            <div class="value-item"><span class="value-num">01</span><div><h4>Integrity</h4><p>We are transparent in our operations, honest with stakeholders and accountable in all we do.</p></div></div>
+            <div class="value-item"><span class="value-num">02</span><div><h4>Inclusion</h4><p>We prioritise the most marginalised: women, youth, persons with disabilities and rural communities.</p></div></div>
+            <div class="value-item"><span class="value-num">03</span><div><h4>Sustainability</h4><p>Every programme is designed to outlast our involvement, building local capacity not dependency.</p></div></div>
+            <div class="value-item"><span class="value-num">04</span><div><h4>Collaboration</h4><p>We work with government, civil society and communities, because lasting change requires all hands.</p></div></div>
           </div>
-          <div class="values-image">
-            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80" alt="Team meeting">
-          </div>
+        </div>
+        <div class="values-image">
+          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&q=80" alt="Team meeting">
         </div>
       </div>
     </section>
 
-    <section class="team-section">
+    <section class="section bg-plum">
       <div class="container">
-        <p class="section-label">Leadership</p>
-        <h2>Our Team</h2>
+        <p class="section-label" style="color:rgba(190,159,100,0.9);">Leadership</p>
+        <h2 class="mt-lg">Our Team</h2>
         <div class="team-grid">
           <div class="team-card">
-            <img src="../images/director.png" alt="Executive Director">
+            <img src="../images/director.png" alt="Comr. Michael Ebofin, Executive Director">
             <h3>Comr. Michael Ebofin</h3>
-            <p>Executie Director</p>
+            <span class="label-caps">Executive Director</span>
           </div>
-         <!-- 
-          <div class="team-card">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Programs Director">
-            <h3>Programs Director</h3>
-            <p>MOCESCOD Leadership</p>
-          </div>
-          <div class="team-card">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Communications Lead">
-            <h3>Communications Lead</h3>
-            <p>MOCESCOD Leadership</p>
-          </div>
-          -->
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="footer-grid">
-      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities through sustainable development.</p></div>
+    <div class="container footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:38px;width:38px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities through sustainable development.</p></div>
       <div class="footer-col"><h4>Organisation</h4><a href="about.html">About Us</a><a href="programs.html">Programs</a><a href="blog.html">News</a></div>
       <div class="footer-col"><h4>Get Involved</h4><a href="volunteer.html">Volunteer</a><a href="donate.html">Donate</a><a href="contact.html">Contact</a></div>
       <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Twitter/X</a><a href="#">Instagram</a></div>
     </div>
-    <div class="footer-bottom"><span>© 2026 MOCESCOD. All rights reserved.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+    <div class="container footer-bottom"><span>© 2026 MOCESCOD. All rights reserved.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
   </footer>
 
   <script type="module">import '../js/global.js';</script>

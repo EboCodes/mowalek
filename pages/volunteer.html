@@ -7,207 +7,155 @@
   <meta name="description" content="Volunteer with MOCESCOD and help transform communities across Nigeria.">
   <link rel="stylesheet" href="../css/global.css">
   <style>
-    .vol-hero { padding:calc(var(--nav-h) + 5rem) 0 5rem; background:var(--green); position:relative; overflow:hidden; }
-    .vol-hero::before { content:''; position:absolute; inset:0; background:url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80') center/cover; opacity:0.15; }
-    .vol-hero-inner { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start; }
-    .vol-hero h1 { color:var(--white); margin-top:0.75rem; }
-    .vol-hero p { color:rgba(248,244,236,0.8); max-width:460px; margin-top:1rem; font-family:var(--sans); line-height:1.7; }
+    .vol-hero { padding: var(--space-xl) 0 var(--space-2xl); }
+    .vol-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl); align-items: start; }
+    .vol-hero p { margin-top: var(--space-lg); max-width: 50ch; font-family: var(--serif); font-size: 1.1rem; line-height: 1.7; color: rgba(248,244,236,0.78); }
 
-    /* Why cards inside left column */
-    .vol-why-inline { margin-top:2.5rem; display:flex; flex-direction:column; gap:1rem; }
-    .vol-why-item { display:flex; gap:1rem; align-items:flex-start; background:rgba(255,255,255,0.07); padding:1.2rem 1.25rem; border-left:3px solid var(--gold); }
-    .vol-why-icon { font-size:1.5rem; flex-shrink:0; line-height:1; }
-    .vol-why-item h4 { font-family:var(--sans); font-size:0.82rem; font-weight:600; color:var(--white); margin-bottom:0.25rem; }
-    .vol-why-item p { font-size:0.8rem; color:rgba(248,244,236,0.65); line-height:1.65; margin:0; }
+    .vol-stats { display: flex; gap: var(--space-xl); margin-top: var(--space-xl); }
+    .vol-stat .stat-num { font-family: var(--serif); font-weight: 300; font-size: 2.2rem; color: var(--gold); display: block; }
+    .vol-stat .label-caps { color: rgba(248,244,236,0.6); margin-top: 0.2rem; display: block; }
 
-    /* Roles inside left column */
-    .vol-roles-inline { margin-top:2.5rem; }
-    .vol-roles-label { font-family:var(--sans); font-size:0.68rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:rgba(201,169,110,0.8); margin-bottom:1rem; display:block; }
-    .vol-role-item { display:flex; gap:1rem; align-items:flex-start; padding:1rem 0; border-bottom:1px solid rgba(255,255,255,0.1); }
-    .vol-role-item:last-child { border-bottom:none; }
-    .vol-role-num { font-family:var(--serif-display); font-size:1.5rem; color:var(--gold); opacity:0.5; line-height:1; flex-shrink:0; min-width:32px; }
-    .vol-role-item h4 { font-size:0.88rem; font-family:var(--sans); font-weight:600; color:var(--white); margin-bottom:0.2rem; }
-    .vol-role-item p { font-size:0.78rem; color:rgba(248,244,236,0.55); line-height:1.6; margin:0; }
+    .vol-why-inline { margin-top: var(--space-xl); display: grid; gap: 1px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.14); }
+    .vol-why-item { background: var(--navy-l); padding: var(--space-lg); }
+    .vol-why-item h4 { font-family: var(--serif); font-weight: 500; font-size: 1rem; color: var(--white); margin-bottom: 0.3rem; }
+    .vol-why-item p { font-size: 0.85rem; color: rgba(248,244,236,0.6); line-height: 1.6; margin: 0; }
 
-    .vol-form-card { background:var(--white); padding:3rem; }
-    .vol-form-card h3 { color:var(--navy); margin-bottom:2rem; font-size:1.4rem; }
-    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
-    .form-field { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.2rem; }
-    .form-field label { font-family:var(--sans); font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--warm-grey); }
-    .form-field input, .form-field select, .form-field textarea {
-      padding:0.8rem 1rem; border:1.5px solid var(--border);
-      background:var(--cream); color:var(--ink);
-      font-family:var(--sans); font-size:0.92rem;
-      outline:none; transition:border-color 0.2s; resize:vertical;
-    }
-    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color:var(--green); }
+    .vol-roles-inline { margin-top: var(--space-xl); }
+    .vol-role-item { display: flex; gap: var(--space-md); align-items: flex-start; padding: var(--space-md) 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+    .vol-role-item:last-child { border-bottom: none; }
+    .vol-role-num { font-family: var(--serif); font-weight: 300; font-size: 1.4rem; color: var(--gold); opacity: 0.7; flex-shrink: 0; min-width: 2rem; }
+    .vol-role-item h4 { font-size: 0.92rem; font-family: var(--sans); font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+    .vol-role-item p { font-size: 0.82rem; color: rgba(248,244,236,0.5); margin: 0; }
 
-    .form-success { display:none; text-align:center; padding:3rem 2rem; }
-    .form-success .success-icon { font-size:3rem; margin-bottom:1rem; }
-    .form-success h3 { color:var(--green); margin-bottom:0.75rem; }
-    .form-success p { color:var(--warm-grey); font-family:var(--sans); }
+    .vol-form-card { background: var(--white); padding: var(--space-xl); border: 1px solid var(--hairline); }
+    .vol-form-card h3 { margin-bottom: var(--space-xl); font-size: 1.4rem; }
+    .form-success { display: none; text-align: center; padding: var(--space-2xl) var(--space-lg); }
+    .form-success h3 { color: var(--green); margin-bottom: 0.75rem; }
 
     @media(max-width:900px) {
-      .vol-hero-inner { grid-template-columns:1fr; gap:3rem; }
-      .form-row { grid-template-columns:1fr; }
-      .vol-why-inline { flex-direction:row; flex-wrap:wrap; }
-      .vol-why-item { flex:1 1 calc(50% - 0.5rem); }
+      .vol-hero-inner { grid-template-columns: 1fr; gap: var(--space-xl); }
+      .field-row { grid-template-columns: 1fr; }
+      .vol-why-inline { grid-template-columns: 1fr 1fr; }
     }
-    @media(max-width:560px) {
-      .vol-why-item { flex:1 1 100%; }
-    }
+    @media(max-width:560px) { .vol-why-inline { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <nav class="site-nav">
-    <a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a>
+    <a href="../index.html" class="nav-logo">
+      <img src="../logo.jpeg" alt="MOCESCOD">
+      <div><div class="nav-logo-text">MOCE<span>SCOD</span></div><span class="nav-logo-sub">Mowalek Centre</span></div>
+    </a>
     <ul class="nav-links">
       <li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li>
       <li><a href="programs.html">Programs</a></li><li><a href="blog.html">News</a></li>
-      <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html">Volunteer</a></li><li><a href="contact.html">Contact</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="volunteer.html" class="active">Volunteer</a></li><li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="donate.html" class="nav-donate-btn">Donate</a>
-    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="nav-right">
+      <a href="donate.html" class="nav-donate-btn">Donate</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
   </nav>
   <div class="nav-drawer" id="nav-drawer">
     <a href="../index.html">Home</a><a href="about.html">About</a><a href="programs.html">Programs</a>
     <a href="blog.html">News</a><a href="gallery.html">Gallery</a><a href="volunteer.html">Volunteer</a>
-    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);font-weight:600;">Donate →</a>
+    <a href="contact.html">Contact</a><a href="donate.html" style="color:var(--green);">Donate →</a>
   </div>
 
   <main>
-    <section class="vol-hero">
-      <div class="container">
-        <div class="vol-hero-inner">
+    <section class="vol-hero bg-plum">
+      <div class="container vol-hero-inner">
+        <div>
+          <p class="section-label" style="color:rgba(190,159,100,0.9);">Join Our Team</p>
+          <h1 class="mt-md">Volunteer with MOCESCOD</h1>
+          <p>Your time and skills can help transform lives. We welcome volunteers from all backgrounds, whether you're a student, professional or retiree, there's a place for you in our work.</p>
 
-          <!-- LEFT — hero text + why cards + roles -->
-          <div>
-            <p class="section-label" style="color:rgba(201,169,110,0.9);">Join Our Team</p>
-            <h1>Volunteer<br>with MOCESCOD</h1>
-            <p>Your time and skills can help transform lives. We welcome volunteers from all backgrounds — whether you're a student, professional or retiree, there's a place for you in our work.</p>
-
-            <!-- Stats -->
-            <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
-              <div style="background:rgba(255,255,255,0.1);padding:1rem 1.5rem;text-align:center;">
-                <div style="font-family:var(--serif-display);font-size:2rem;color:var(--gold);">50+</div>
-                <div style="font-family:var(--sans);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(248,244,236,0.65);">Active Volunteers</div>
-              </div>
-              <div style="background:rgba(255,255,255,0.1);padding:1rem 1.5rem;text-align:center;">
-                <div style="font-family:var(--serif-display);font-size:2rem;color:var(--gold);">8</div>
-                <div style="font-family:var(--sans);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(248,244,236,0.65);">States Covered</div>
-              </div>
-            </div>
-
-            <!-- Why Volunteer -->
-            <div class="vol-why-inline">
-              <div class="vol-why-item">
-                <span class="vol-why-icon">🌱</span>
-                <div><h4>Create Lasting Impact</h4><p>Your work directly contributes to sustainable change in communities that need it most across Nigeria.</p></div>
-              </div>
-              <div class="vol-why-item">
-                <span class="vol-why-icon">🤝</span>
-                <div><h4>Build Connections</h4><p>Join a network of passionate change-makers, community leaders and development professionals.</p></div>
-              </div>
-              <div class="vol-why-item">
-                <span class="vol-why-icon">📈</span>
-                <div><h4>Grow Your Skills</h4><p>Gain hands-on experience in community development, project management, health outreach and more.</p></div>
-              </div>
-            </div>
-
-            <!-- Volunteer Roles -->
-            <div class="vol-roles-inline">
-              <span class="vol-roles-label">Volunteer Roles</span>
-              <div class="vol-role-item"><span class="vol-role-num">01</span><div><h4>Field Volunteer</h4><p>Support programme delivery on the ground — training facilitation, community outreach and distribution activities.</p></div></div>
-              <div class="vol-role-item"><span class="vol-role-num">02</span><div><h4>Health Volunteer</h4><p>Assist our mobile health clinics with screening, health education and patient support in rural communities.</p></div></div>
-              <div class="vol-role-item"><span class="vol-role-num">03</span><div><h4>Education Mentor</h4><p>Tutor and mentor students in MOCESCOD's education support programme across partner schools.</p></div></div>
-              <div class="vol-role-item"><span class="vol-role-num">04</span><div><h4>Communications</h4><p>Document our work through photography, video and writing — helping us tell our communities' stories.</p></div></div>
-            </div>
+          <div class="vol-stats">
+            <div class="vol-stat"><span class="stat-num">50+</span><span class="label-caps">Active Volunteers</span></div>
+            <div class="vol-stat"><span class="stat-num">8</span><span class="label-caps">States Covered</span></div>
           </div>
 
-          <!-- RIGHT — form -->
-          <div>
-            <div class="vol-form-card">
-              <h3>Sign Up to Volunteer</h3>
-              <div id="vol-form-wrap">
-                <form id="vol-form" onsubmit="handleVolSubmit(event)">
-                  <div class="form-row">
-                    <div class="form-field"><label>First Name *</label><input type="text" id="vf-fname" required placeholder="First name"></div>
-                    <div class="form-field"><label>Last Name *</label><input type="text" id="vf-lname" required placeholder="Last name"></div>
-                  </div>
-                  <div class="form-field"><label>Email Address *</label><input type="email" id="vf-email" required placeholder="your@email.com"></div>
-                  <div class="form-field"><label>Phone Number</label><input type="tel" id="vf-phone" placeholder="+234..."></div>
-                  <div class="form-field"><label>Area of Interest *</label>
-                    <select id="vf-area" required>
-                      <option value="">Select area…</option>
-                      <option>Youth Empowerment</option>
-                      <option>Community Health</option>
-                      <option>Education Support</option>
-                      <option>Food Security</option>
-                      <option>Communications & Media</option>
-                      <option>Administration</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                  <div class="form-field"><label>Availability</label>
-                    <select id="vf-avail">
-                      <option value="">Select…</option>
-                      <option>Weekdays</option>
-                      <option>Weekends</option>
-                      <option>Both</option>
-                      <option>Flexible</option>
-                    </select>
-                  </div>
-                  <div class="form-field"><label>Occupation / Profession</label><input type="text" id="vf-occupation" placeholder="e.g. Student, Nurse, Teacher…"></div>
-                  <div class="form-field"><label>State of Residence *</label>
-                    <select id="vf-state" required>
-                      <option value="">Select state…</option>
-                      <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option><option>Anambra</option>
-                      <option>Bauchi</option><option>Bayelsa</option><option>Benue</option><option>Borno</option>
-                      <option>Cross River</option><option>Delta</option><option>Ebonyi</option><option>Edo</option>
-                      <option>Ekiti</option><option>Enugu</option><option>FCT — Abuja</option><option>Gombe</option>
-                      <option>Imo</option><option>Jigawa</option><option>Kaduna</option><option>Kano</option>
-                      <option>Katsina</option><option>Kebbi</option><option>Kogi</option><option>Kwara</option>
-                      <option>Lagos</option><option>Nasarawa</option><option>Niger</option><option>Ogun</option>
-                      <option>Ondo</option><option>Osun</option><option>Oyo</option><option>Plateau</option>
-                      <option>Rivers</option><option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
-                    </select>
-                  </div>
-                  <div class="form-field"><label>Tell us about yourself</label><textarea id="vf-bio" rows="3" placeholder="Skills, experience, background…"></textarea></div>
-                  <div class="form-field"><label>Cover Letter *</label><textarea id="vf-cover" rows="5" required placeholder="Why do you want to volunteer with MOCESCOD? What do you hope to contribute and gain from this experience?"></textarea></div>
-                  <div class="form-field"><label>How did you hear about us?</label>
-                    <select id="vf-source">
-                      <option value="">Select…</option>
-                      <option>Social Media</option>
-                      <option>Friend / Family</option>
-                      <option>Website</option>
-                      <option>Event / Programme</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-                  <button type="submit" class="btn btn-filled" id="vf-submit" style="width:100%;justify-content:center;">Submit Application <span class="arr">→</span></button>
-                </form>
-              </div>
-              <div class="form-success" id="vol-success">
-                <div class="success-icon">✅</div>
-                <h3>Application Received!</h3>
-                <p>Thank you for signing up to volunteer. Our team will reach out to you shortly.</p>
-              </div>
-            </div>
+          <div class="vol-why-inline">
+            <div class="vol-why-item"><h4>Create Lasting Impact</h4><p>Your work directly contributes to sustainable change in communities that need it most across Nigeria.</p></div>
+            <div class="vol-why-item"><h4>Build Connections</h4><p>Join a network of passionate change-makers, community leaders and development professionals.</p></div>
+            <div class="vol-why-item"><h4>Grow Your Skills</h4><p>Gain hands-on experience in community development, project management, health outreach and more.</p></div>
           </div>
 
+          <div class="vol-roles-inline">
+            <p class="section-label" style="color:rgba(190,159,100,0.9);margin-bottom:var(--space-md);">Volunteer Roles</p>
+            <div class="vol-role-item"><span class="vol-role-num">01</span><div><h4>Field Volunteer</h4><p>Support programme delivery on the ground, training facilitation, community outreach and distribution activities.</p></div></div>
+            <div class="vol-role-item"><span class="vol-role-num">02</span><div><h4>Health Volunteer</h4><p>Assist our mobile health clinics with screening, health education and patient support in rural communities.</p></div></div>
+            <div class="vol-role-item"><span class="vol-role-num">03</span><div><h4>Education Mentor</h4><p>Tutor and mentor students in MOCESCOD's education support programme across partner schools.</p></div></div>
+            <div class="vol-role-item"><span class="vol-role-num">04</span><div><h4>Communications</h4><p>Document our work through photography, video and writing, helping us tell our communities' stories.</p></div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="vol-form-card">
+            <h3>Sign Up to Volunteer</h3>
+            <div id="vol-form-wrap">
+              <form id="vol-form" onsubmit="handleVolSubmit(event)">
+                <div class="field-row">
+                  <div class="field"><label>First Name *</label><input type="text" id="vf-fname" required placeholder="First name"></div>
+                  <div class="field"><label>Last Name *</label><input type="text" id="vf-lname" required placeholder="Last name"></div>
+                </div>
+                <div class="field"><label>Email Address *</label><input type="email" id="vf-email" required placeholder="your@email.com"></div>
+                <div class="field"><label>Phone Number</label><input type="tel" id="vf-phone" placeholder="+234..."></div>
+                <div class="field"><label>Area of Interest *</label>
+                  <select id="vf-area" required>
+                    <option value="">Select area…</option>
+                    <option>Youth Empowerment</option><option>Community Health</option><option>Education Support</option>
+                    <option>Food Security</option><option>Communications &amp; Media</option><option>Administration</option><option>Other</option>
+                  </select>
+                </div>
+                <div class="field"><label>Availability</label>
+                  <select id="vf-avail">
+                    <option value="">Select…</option><option>Weekdays</option><option>Weekends</option><option>Both</option><option>Flexible</option>
+                  </select>
+                </div>
+                <div class="field"><label>Occupation / Profession</label><input type="text" id="vf-occupation" placeholder="e.g. Student, Nurse, Teacher…"></div>
+                <div class="field"><label>State of Residence *</label>
+                  <select id="vf-state" required>
+                    <option value="">Select state…</option>
+                    <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option><option>Anambra</option>
+                    <option>Bauchi</option><option>Bayelsa</option><option>Benue</option><option>Borno</option>
+                    <option>Cross River</option><option>Delta</option><option>Ebonyi</option><option>Edo</option>
+                    <option>Ekiti</option><option>Enugu</option><option>FCT — Abuja</option><option>Gombe</option>
+                    <option>Imo</option><option>Jigawa</option><option>Kaduna</option><option>Kano</option>
+                    <option>Katsina</option><option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+                    <option>Lagos</option><option>Nasarawa</option><option>Niger</option><option>Ogun</option>
+                    <option>Ondo</option><option>Osun</option><option>Oyo</option><option>Plateau</option>
+                    <option>Rivers</option><option>Sokoto</option><option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+                  </select>
+                </div>
+                <div class="field"><label>Tell us about yourself</label><textarea id="vf-bio" rows="3" placeholder="Skills, experience, background…"></textarea></div>
+                <div class="field"><label>Cover Letter *</label><textarea id="vf-cover" rows="5" required placeholder="Why do you want to volunteer with MOCESCOD? What do you hope to contribute and gain from this experience?"></textarea></div>
+                <div class="field"><label>How did you hear about us?</label>
+                  <select id="vf-source">
+                    <option value="">Select…</option><option>Social Media</option><option>Friend / Family</option><option>Website</option><option>Event / Programme</option><option>Other</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-filled" id="vf-submit" style="width:100%;justify-content:center;">Submit Application <span class="arr">→</span></button>
+              </form>
+            </div>
+            <div class="form-success" id="vol-success">
+              <h3>Application Received</h3>
+              <p>Thank you for signing up to volunteer. Our team will reach out to you shortly.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="footer-grid">
-      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities.</p></div>
+    <div class="container footer-grid">
+      <div class="footer-brand"><a href="../index.html" class="nav-logo"><img src="../Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:38px;width:38px;"><div class="nav-logo-text">MOCE<span>SCOD</span></div></a><p>Empowering Nigerian communities.</p></div>
       <div class="footer-col"><h4>Organisation</h4><a href="about.html">About</a><a href="programs.html">Programs</a><a href="blog.html">News</a></div>
       <div class="footer-col"><h4>Get Involved</h4><a href="volunteer.html">Volunteer</a><a href="donate.html">Donate</a><a href="contact.html">Contact</a></div>
       <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Instagram</a></div>
     </div>
-    <div class="footer-bottom"><span>© 2026 MOCESCOD.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+    <div class="container footer-bottom"><span>© 2026 MOCESCOD.</span><p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
   </footer>
 
   <script type="module">

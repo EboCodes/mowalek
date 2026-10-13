@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MOCESCOD - Mowalek Centre for Sustainable Community Development</title>
+  <title>MOCESCOD — Mowalek Centre for Sustainable Community Development</title>
   <meta name="description" content="MOCESCOD empowers communities across Nigeria through education, health, youth development and sustainable livelihood programmes.">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/home.css">
@@ -13,10 +13,13 @@
   <nav class="site-nav" role="navigation">
     <a href="index.html" class="nav-logo">
       <img src="logo.jpeg" alt="MOCESCOD Logo">
-      <div class="nav-logo-text">MOCE<span>SCOD</span></div>
+      <div>
+        <div class="nav-logo-text">MOCE<span>SCOD</span></div>
+        <span class="nav-logo-sub">Mowalek Centre</span>
+      </div>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html" class="active">Home</a></li>
       <li><a href="pages/about.html">About</a></li>
       <li><a href="pages/programs.html">Programs</a></li>
       <li><a href="pages/blog.html">News</a></li>
@@ -24,98 +27,94 @@
       <li><a href="pages/volunteer.html">Volunteer</a></li>
       <li><a href="pages/contact.html">Contact</a></li>
     </ul>
-    <a href="pages/donate.html" class="nav-donate-btn">Donate</a>
-    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-right">
+      <a href="pages/donate.html" class="nav-donate-btn">Donate</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
   <div class="nav-drawer" id="nav-drawer">
     <a href="index.html">Home</a>
     <a href="pages/about.html">About</a>
     <a href="pages/programs.html">Programs</a>
-    <a href="pages/blog.html">News & Blog</a>
+    <a href="pages/blog.html">News &amp; Blog</a>
     <a href="pages/gallery.html">Gallery</a>
     <a href="pages/volunteer.html">Volunteer</a>
     <a href="pages/contact.html">Contact</a>
-    <a href="pages/donate.html" style="color:var(--green);font-weight:600;">Donate →</a>
+    <a href="pages/donate.html" style="color:var(--green);">Donate →</a>
   </div>
 
   <main>
 
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-bg">
-        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&q=85" alt="Community development" class="hero-img">
-        <div class="hero-overlay"></div>
-      </div>
-      <div class="hero-content container">
+      <div class="container hero-grid">
         <div class="hero-text">
-          <p class="section-label" style="color:rgba(201,169,110,0.9);">Est. Nigeria &nbsp;·&nbsp; Community First</p>
-          <h1>Building Communities.<br><em>Changing Lives.</em></h1>
+          <p class="section-label">Est. Nigeria · Community First</p>
+          <h1>Building communities.<br><em>Changing lives.</em></h1>
           <p class="hero-sub">MOCESCOD empowers individuals and communities across Nigeria through sustainable development programmes rooted in dignity, equity and long-term impact.</p>
           <div class="hero-ctas">
             <a href="pages/programs.html" class="btn btn-filled">Our Programs <span class="arr">→</span></a>
-            <a href="pages/donate.html" class="btn btn-white">Support Our Work <span class="arr">→</span></a>
+            <a href="pages/donate.html" class="btn btn-outline">Support Our Work <span class="arr">→</span></a>
+          </div>
+        </div>
+        <div>
+          <div class="hero-img-wrap">
+            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1000&q=85" alt="MOCESCOD community development programme">
+          </div>
+          <div class="hero-img-caption">
+            <span class="caption">Fig. 01 — Field programme, Southwestern Nigeria</span>
+            <span class="caption">MOCESCOD</span>
           </div>
         </div>
       </div>
-      <div class="hero-scroll"><span></span></div>
     </section>
 
     <!-- IMPACT STRIP -->
     <section class="impact-strip">
-      <div class="container">
-        <div class="impact-inner">
-          <div class="impact-stat"><span class="stat-num">1,200+</span><span class="stat-label">Families Supported</span></div>
-          <div class="impact-divider"></div>
-          <div class="impact-stat"><span class="stat-num">12</span><span class="stat-label">Communities Reached</span></div>
-          <div class="impact-divider"></div>
-          <div class="impact-stat"><span class="stat-num">8</span><span class="stat-label">Active Programs</span></div>
-          <div class="impact-divider"></div>
-          <div class="impact-stat"><span class="stat-num">10+</span><span class="stat-label">Years of Service</span></div>
-        </div>
+      <div class="container impact-inner">
+        <div class="impact-stat"><span class="stat-num">1,200+</span><span class="stat-label">Families Supported</span></div>
+        <div class="impact-stat"><span class="stat-num">12</span><span class="stat-label">Communities Reached</span></div>
+        <div class="impact-stat"><span class="stat-num">8</span><span class="stat-label">Active Programmes</span></div>
+        <div class="impact-stat"><span class="stat-num">10+</span><span class="stat-label">Years Of Service</span></div>
       </div>
     </section>
 
     <!-- MISSION -->
     <section class="mission-section">
-      <div class="container">
-        <div class="mission-inner">
-          <div class="mission-image">
-            <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80" alt="Community members">
-            <div class="mission-image-badge">
-              <span class="badge-icon">✦</span>
-              <span>Sustainable Development</span>
-            </div>
+      <div class="container mission-inner">
+        <div class="mission-image">
+          <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&q=80" alt="Community members at a MOCESCOD programme">
+          <span class="caption">Fig. 02 — Community session, Osun State</span>
+        </div>
+        <div class="mission-text">
+          <p class="section-label">Who We Are</p>
+          <h2 class="mt-lg">A centre for community-led change</h2>
+          <p>MOCESCOD — the Mowalek Centre for Sustainable Community Development — is a Nigerian non-governmental organisation committed to poverty alleviation, community empowerment and the creation of lasting opportunities for the most vulnerable.</p>
+          <p>We believe change happens from within communities. Our programmes are designed with, not just for, the people we serve.</p>
+          <div class="mission-values">
+            <div class="mv-item"><span class="mv-dot" style="background:var(--green)"></span>Integrity in all we do</div>
+            <div class="mv-item"><span class="mv-dot" style="background:var(--gold)"></span>Community-led solutions</div>
+            <div class="mv-item"><span class="mv-dot" style="background:var(--navy)"></span>Sustainable, long-term impact</div>
           </div>
-          <div class="mission-text">
-            <p class="section-label">Who We Are</p>
-            <h2 style="margin-top:0.75rem;">A centre for community-led change</h2>
-            <p>MOCESCOD — the Mowalek Centre for Sustainable Community Development — is a Nigerian non-governmental organisation committed to poverty alleviation, community empowerment and the creation of lasting opportunities for the most vulnerable.</p>
-            <p>We believe change happens from within communities. Our programmes are designed with, not just for, the people we serve.</p>
-            <div class="mission-values">
-              <div class="mv-item"><span class="mv-dot" style="background:var(--green)"></span>Integrity in all we do</div>
-              <div class="mv-item"><span class="mv-dot" style="background:var(--gold)"></span>Community-led solutions</div>
-              <div class="mv-item"><span class="mv-dot" style="background:var(--navy)"></span>Sustainable, long-term impact</div>
-            </div>
-            <a href="pages/about.html" class="btn btn-outline" style="margin-top:2rem;">Learn More <span class="arr">→</span></a>
-          </div>
+          <a href="pages/about.html" class="btn btn-outline mt-xl">Learn More <span class="arr">→</span></a>
         </div>
       </div>
     </section>
 
     <!-- PROGRAMS -->
-    <section class="programs-section">
+    <section class="programs-section bg-parchment">
       <div class="container">
         <div class="section-header">
           <p class="section-label">What We Do</p>
-          <h2 style="margin-top:0.75rem;">Our Core Programs</h2>
+          <h2 class="mt-lg">Our Four Core Commitments</h2>
         </div>
         <div class="programs-grid" id="home-programs">
-          <p style="font-family:var(--sans);color:var(--warm-grey);font-size:0.9rem;">Loading programs…</p>
+          <div class="program-card"><p>Loading programmes…</p></div>
         </div>
-        <div style="text-align:center;margin-top:3rem;">
-          <a href="pages/programs.html" class="btn btn-outline">All Programs <span class="arr">→</span></a>
+        <div class="mt-xl">
+          <a href="pages/programs.html" class="btn-link">All Programmes <span class="arr">→</span></a>
         </div>
       </div>
     </section>
@@ -126,84 +125,79 @@
         <div class="news-header">
           <div>
             <p class="section-label">Latest Updates</p>
-            <h2 style="margin-top:0.75rem;">News & Stories</h2>
+            <h2 class="mt-lg">News &amp; Stories</h2>
           </div>
-          <a href="pages/blog.html" class="btn btn-outline">All Posts <span class="arr">→</span></a>
+          <a href="pages/blog.html" class="btn-link">All Posts <span class="arr">→</span></a>
         </div>
         <div class="news-grid" id="home-posts">
-          <p style="font-family:var(--sans);color:var(--warm-grey);font-size:0.9rem;">Loading news…</p>
+          <p>Loading news…</p>
         </div>
       </div>
     </section>
 
     <!-- QUOTE BAND -->
-    <section class="quote-band">
+    <section class="quote-band bordered-y">
       <div class="container">
-        <div class="ornament">✦ ✦ ✦</div>
         <blockquote class="pull-quote">
-          <p>"Development is not just about infrastructure — it is about people, dignity and the belief that every community deserves the chance to thrive."</p>
-          <cite>— MOCESCOD Mission Statement</cite>
+          <p>Development is not just about infrastructure. It is about people, dignity and the belief that every community deserves the chance to thrive.</p>
+          <cite>MOCESCOD Mission Statement</cite>
         </blockquote>
-        <div class="ornament">✦ ✦ ✦</div>
       </div>
     </section>
 
     <!-- VOLUNTEER CTA -->
-    <section class="volunteer-cta">
-      <div class="container">
-        <div class="vcta-inner">
-          <div class="vcta-text">
-            <p class="section-label" style="color:rgba(201,169,110,0.9);">Join Us</p>
-            <h2 style="color:var(--white);margin-top:0.75rem;">Become a part of the change</h2>
-            <p>Whether you give your time, your skills or your resources — every contribution helps us reach more communities.</p>
-          </div>
-          <div class="vcta-actions">
-            <a href="pages/volunteer.html" class="btn btn-gold">Volunteer With Us <span class="arr">→</span></a>
-            <a href="pages/donate.html" class="btn btn-white">Make a Donation <span class="arr">→</span></a>
-          </div>
+    <section class="volunteer-cta bg-plum">
+      <div class="container vcta-inner">
+        <div class="vcta-text">
+          <p class="section-label" style="color:rgba(190,159,100,0.9);">Join Us</p>
+          <h2 class="mt-lg">Become a part of the change</h2>
+          <p>Whether you give your time, your skills or your resources, every contribution helps us reach more communities.</p>
+        </div>
+        <div class="vcta-actions">
+          <a href="pages/volunteer.html" class="btn btn-gold">Volunteer With Us <span class="arr">→</span></a>
+          <a href="pages/donate.html" class="btn btn-white">Make a Donation <span class="arr">→</span></a>
         </div>
       </div>
     </section>
 
     <!-- NEWSLETTER -->
-    <section class="newsletter-section">
-      <div class="container">
-        <div class="newsletter-inner">
-          <div class="newsletter-text">
-            <p class="section-label">Stay Informed</p>
-            <h2 style="margin-top:0.75rem;">Get our updates</h2>
-            <p>Programme news, community stories and impact reports — delivered directly to your inbox.</p>
-          </div>
-          <form class="newsletter-form" onsubmit="handleSubscribe(event)">
-            <div class="newsletter-field">
-              <input type="email" placeholder="your@email.com" required aria-label="Email address">
-              <button type="submit" class="btn btn-filled">Subscribe</button>
-            </div>
-            <p class="newsletter-small">No spam. Unsubscribe any time.</p>
-          </form>
+    <section class="newsletter-section bg-parchment">
+      <div class="container newsletter-inner">
+        <div class="newsletter-text">
+          <p class="section-label">Stay Informed</p>
+          <h2>Get our updates</h2>
+          <p>Programme news, community stories and impact reports, delivered directly to your inbox.</p>
         </div>
+        <form class="newsletter-form" onsubmit="handleSubscribe(event)">
+          <div class="newsletter-field">
+            <input type="email" placeholder="your@email.com" required aria-label="Email address">
+            <button type="submit" class="btn">Subscribe</button>
+          </div>
+          <p class="newsletter-small">No spam. Unsubscribe any time.</p>
+        </form>
       </div>
     </section>
 
   </main>
 
   <footer class="site-footer">
-    <div class="footer-grid">
+    <div class="container footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="nav-logo">
-          <img src="Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:42px;">
+          <img src="Mowalek_Logo.jpeg" alt="MOCESCOD" style="height:38px;width:38px;">
           <div class="nav-logo-text">MOCE<span>SCOD</span></div>
         </a>
         <p>Empowering Nigerian communities through sustainable development, education and health programmes since our founding.</p>
       </div>
-      <div class="footer-col"><h4>Organisation</h4><a href="pages/about.html">About Us</a><a href="pages/programs.html">Programs</a><a href="pages/gallery.html">Gallery</a><a href="pages/blog.html">News & Blog</a></div>
+      <div class="footer-col"><h4>Organisation</h4><a href="pages/about.html">About Us</a><a href="pages/programs.html">Programs</a><a href="pages/gallery.html">Gallery</a><a href="pages/blog.html">News &amp; Blog</a></div>
       <div class="footer-col"><h4>Get Involved</h4><a href="pages/volunteer.html">Volunteer</a><a href="pages/donate.html">Donate</a><a href="pages/contact.html">Contact Us</a></div>
       <div class="footer-col"><h4>Follow Us</h4><a href="#">Facebook</a><a href="#">Twitter/X</a><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
     </div>
-    <div class="footer-bottom">
+    <div class="container footer-bottom">
       <span>© 2026 MOCESCOD. All rights reserved.</span>
       <span>Mowalek Centre for Sustainable Community Development</span>
-    <p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p></div>
+      <p class="footer-built-by">Built by <a href="https://ebo-ayobami-portfolio.vercel.app/" target="_blank" rel="noopener">Ebofin Ayobami Francis</a></p>
+    </div>
   </footer>
 
   <script type="module">
@@ -212,32 +206,27 @@
     async function init() {
       await MC.seedIfEmpty();
 
-      // Load programs
       const pgrid = document.getElementById('home-programs');
       const programs = await MC.getPrograms();
       if (programs.length) {
-        pgrid.innerHTML = programs.slice(0, 4).map(p => `
+        pgrid.innerHTML = programs.slice(0, 4).map((p, i) => `
           <div class="program-card">
-            <div class="program-card-img-wrap">
-              <img src="${p.image || 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=700&q=80'}" alt="${p.title}" loading="lazy">
-            </div>
+            <span class="program-index">0${i + 1}</span>
             <div class="program-card-body">
-              <span class="program-icon">${p.icon || '✦'}</span>
               <h3>${p.title}</h3>
               <p>${p.description}</p>
             </div>
           </div>`).join('');
       } else {
-        pgrid.innerHTML = '<p style="font-family:var(--sans);color:var(--warm-grey);">No programs yet.</p>';
+        pgrid.innerHTML = '<p>No programmes yet.</p>';
       }
 
-      // Load posts
       const grid = document.getElementById('home-posts');
       const posts = await MC.getPosts();
       if (posts.length) {
         grid.innerHTML = posts.slice(0, 3).map(p => `<div>${MC.renderCard(p, 'pages/')}</div>`).join('');
       } else {
-        grid.innerHTML = '<p style="font-family:var(--sans);color:var(--warm-grey);">No posts yet.</p>';
+        grid.innerHTML = '<p>No posts yet.</p>';
       }
     }
 
